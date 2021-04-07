@@ -9,9 +9,13 @@
 }
 
 .outer {
+    width: 100%;
     height: 50px;
     line-height: 50px;
-    background: rgba(113, 182, 221, 0.3);
+    background: #D4E9F5;
+    position: fixed;
+    top:0;
+    z-index: 1;
 }
 
 .outer>.container{ 
@@ -21,6 +25,11 @@
 .outer .index {
     position: absolute;
     left: 0;
+}
+
+.outer .shop {
+    position: absolute;
+    left: 70px;
 }
 
 .tips {
@@ -38,7 +47,7 @@
 
 .wrap {
     width: 1200px;
-    margin: 0 auto;
+    margin: 100px auto;
 }
 
 .wrap table {

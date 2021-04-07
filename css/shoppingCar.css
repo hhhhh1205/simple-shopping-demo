@@ -14,9 +14,13 @@ i,b {
 }
 
 .outer {
-    height: 50px;
-    line-height: 50px;
-    background: rgba(113, 182, 221, 0.3);
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #D4E9F5;
+  position: fixed;
+  top:0;
+  z-index: 1;
 }
 
 .outer>.container{ 
@@ -172,9 +176,10 @@ i,b {
   
   .shoppingCarConCenter01_01 {
     float: left;
-    width: 400px;
+    max-width: 400px;
     line-height: 16px;
     margin-top: 20px;
+    cursor: default;
   }
   
   .shoppingCarConCenter01_01 p {
@@ -340,4 +345,17 @@ i,b {
     line-height: 60px;
     color: #fff;
     font-size: 16px;
+  }
+
+  .footer {
+    background-color: #F9F9F9;
+    clear: both;
+    position: relative;
+    top: 60px;
+    height: 420px;
+  }
+
+  .footer > div {
+    position: relative;
+    top: 20px;
   }

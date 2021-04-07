@@ -49,9 +49,9 @@
         </ol>
     </div>
     <div class="heigNav">
-        <li class="shoppingCar">
+        <div class="shoppingCar button button-raised button-action">
             购物车
-        </li>
+        </div>
         <li class="phone">
             手机
         </li>
@@ -79,9 +79,9 @@
         <li class="pillow">
             枕头
         </li>
-        <li class="goToHead">
+        <div class="goToHead button button-3d button-action button-rounded">
             返回顶部
-        </li>
+        </div>
     </div>
     <div class="goods container-fluid">
         <div class="phoneBox container">
@@ -175,8 +175,146 @@
 
 <script>
 
+    if (document.cookie) {
+
+        var lguser = getCookie("lguser");
+        if (lguser) {
+
+            $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
+
+        }
+    }
+
+    $(document).on("click", ".heigNav li", function () {
+        // console.log($(this).index());
+        var top = $(".goods>div").eq($(this).index() - 1).offset().top - 300;
+        $(document).scrollTop(top);
+    })
+
+    $(".heigNav li").mouseenter(function () {
+        $(this).addClass("button button-glow button-primary");
+    })
+
+    $(".heigNav li").mouseleave(function () {
+        $(this).removeClass("button button-glow button-primary");
+    })
+
+    $(document).on("click", ".shoppingCar", function () {
+        if (lguser) {
+            location.href = "shoppingCar.html";
+        } else {
+            if (confirm("还未登录账号，是否跳转至登录页面")) {
+                location.href = "login.html";
+            }
+        }
+    })
+
+    $(document).on("click", ".goToHead", function () {
+        var top = $(document).scrollTop();
+        var timer = setInterval(function () {
+            top -= 50;
+            if (top < 50) {
+                $(document).scrollTop(0);
+                clearInterval(timer);
+            }
+            $(document).scrollTop(top);
+        }, 10)
+    })
+
     $(document).scroll(function () {
-        console.log($(".pillowBox").offset());
+        // console.log($(".pillowBox").offset().top - $(document).scrollTop());  // 300
+        console.log($(".phoneBox").offset().top - $(document).scrollTop(), $(".earBox").offset().top - $(document).scrollTop());
+        // console.log($(".heigNav").offset().top - $(document).scrollTop());
+
+        if ($(".heigNav").offset().top - $(document).scrollTop() < 230 || $(".heigNav").offset().top - $(document).scrollTop() > 200) {
+            var top = $(document).scrollTop() + 230;
+            // console.log(top);
+            $(".heigNav").stop().offset({ top: top });
+        }
+
+        if ($(".phoneBox").offset().top - $(document).scrollTop() < 300) {
+            $(".phone").addClass("button button-glow button-primary");
+            $(".heigNav").css("opacity", "1");
+            if ($(".phoneBox").offset().top - $(document).scrollTop() < -105) {
+                $(".phone").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".phone").removeClass("button button-glow button-primary");
+            $(".heigNav").css("opacity", "0");
+        }
+
+        if ($(".earBox").offset().top - $(document).scrollTop() < 300) {
+            $(".ear").addClass("button button-glow button-primary");
+            if ($(".earBox").offset().top - $(document).scrollTop() < -105) {
+                $(".ear").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".ear").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".musicBox").offset().top - $(document).scrollTop() < 300) {
+            $(".music").addClass("button button-glow button-primary");
+            if ($(".musicBox").offset().top - $(document).scrollTop() < -105) {
+                $(".music").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".music").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".notebookBox").offset().top - $(document).scrollTop() < 300) {
+            $(".notebook").addClass("button button-glow button-primary");
+            if ($(".notebookBox").offset().top - $(document).scrollTop() < -105) {
+                $(".notebook").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".notebook").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".lineBox").offset().top - $(document).scrollTop() < 300) {
+            $(".line").addClass("button button-glow button-primary");
+            if ($(".lineBox").offset().top - $(document).scrollTop() < -105) {
+                $(".line").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".line").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".padBox").offset().top - $(document).scrollTop() < 300) {
+            $(".pad").addClass("button button-glow button-primary");
+            if ($(".padBox").offset().top - $(document).scrollTop() < -105) {
+                $(".pad").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".pad").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".iwatchBox").offset().top - $(document).scrollTop() < 300) {
+            $(".iwatch").addClass("button button-glow button-primary");
+            if ($(".iwatchBox").offset().top - $(document).scrollTop() < -105) {
+                $(".iwatch").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".iwatch").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".eyeBox").offset().top - $(document).scrollTop() < 300) {
+            $(".eye").addClass("button button-glow button-primary");
+            if ($(".eyeBox").offset().top - $(document).scrollTop() < -105) {
+                $(".eye").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".eye").removeClass("button button-glow button-primary");
+        }
+
+        if ($(".pillowBox").offset().top - $(document).scrollTop() < 300) {
+            $(".pillow").addClass("button button-glow button-primary");
+            if ($(".pillowBox").offset().top - $(document).scrollTop() < -105) {
+                $(".pillow").removeClass("button button-glow button-primary");
+            }
+        } else {
+            $(".pillow").removeClass("button button-glow button-primary");
+        }
+
     })
 
     // 轮播图
@@ -227,7 +365,7 @@
         timer = setInterval(function () {
             i++;
             move();
-        }, 3500);
+        }, 2500);
     }
 
     function move() {
@@ -262,16 +400,6 @@
     var orderType = "asc";  // 默认排序方式 asc
     var showNum = 5;  // 默认每页显示数据条数，5条
     var pageIndex = 1;  // 默认显示第一页
-
-    if (document.cookie) {
-
-        var lguser = getCookie("lguser");
-        if (lguser) {
-
-            $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
-
-        }
-    }
 
     $(".seeAll").click(function () {
         var str = $(this).parent().prev().text();

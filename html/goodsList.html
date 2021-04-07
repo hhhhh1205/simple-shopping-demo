@@ -20,9 +20,10 @@
 </head>
 
 <body>
-    <div class="outer container-fluid">
+    <div class="outer">
         <div class="container">
             <div class="index"><a href="index.html">首页</a></div>
+            <div class="shop"><a href="javascript:;">购物车</a></div>
             <div class="tips">
                 <a href="register.html">注册</a>
                 <a href="login.html">登录</a>
@@ -137,6 +138,16 @@
 
             }
         }
+
+        $(".shop").click(function () {
+            if (lguser) {
+                location.href = "shoppingCar.html";
+            } else {
+                if (confirm("还未登录账号，是否跳转至登录页面")) {
+                    location.href = "login.html";
+                }
+            }
+        })
 
         var key = "";
         var orderCol = "id";

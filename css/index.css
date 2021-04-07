@@ -168,13 +168,30 @@ i {font-style: normal;}
 .heigNav {
     border: 1px solid #ccc;
     position: absolute;
-    /* top: 20px; */
+    top: 830px;
     right: 20px;
+    opacity: 0;
+    transition: opacity 0.5s;
 }
 
-.heigNav li {
+.heigNav li, .heigNav div {
     text-align: center;
-    padding: 8px;
-    border: 1px solid #ccc;
+    height: 40px;
+    line-height: 40px;
+    width: 100px;
+    cursor: default;
+    user-select: none;
 }
 
+.heigNav .shoppingCar {
+    padding: 0 20px !important;
+}
+
+.heigNav .goToHead {
+    padding: 0 10px !important;
+}
+
+.heigNav .button {
+    padding: 0;
+    display: block;
+}

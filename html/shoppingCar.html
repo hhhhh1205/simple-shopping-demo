@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="outer container-fluid">
+    <div class="outer">
         <div class="container">
             <div class="index"><a href="index.html">首页</a></div>
             <div class="tips">
@@ -121,6 +121,12 @@
                 <span>￥0</span>
             </div>
             <a href="#" class="pay button button-raised button-caution">去结算</a>
+        </div>
+    </div>
+
+    <div class="footer .container-fluid">
+        <div class="container">
+            <img src="../images/shoppingCar-footer.png" alt="">
         </div>
     </div>
 </body>
@@ -370,6 +376,12 @@
             // $(this).parents(".shoppingCarConCenter01").attr("data-id");
 
             $(document).on('click', '.shoppingCarImg', function () {
+                var gid = $(this).parent().attr("data-gid");
+                // console.log($(this).parent().attr("data-gid"));
+                location.href = "goodsDetail.html?gid=" + gid;
+            })
+
+            $(document).on('click', '.shoppingCarConCenter01_01', function () {
                 var gid = $(this).parent().attr("data-gid");
                 // console.log($(this).parent().attr("data-gid"));
                 location.href = "goodsDetail.html?gid=" + gid;
