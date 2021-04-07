@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .createCode {
+            /*  设置验证码为不可选中  */
+            user-select: none;
+        }
+
+        .form {
+            width: 390px;
+            margin: 50px auto;
+            padding: 30px 35px;
+            background-color: #F1F1F3;
+            border-radius: 20px;
+        }
+
+        p:first-of-type {
+            color: #B5B3B5;
+            margin-top: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        p:first-of-type a {
+            color: #4187F5;
+        }
+
+        p:not(first-of-type) {
+            margin-top: 30px;
+            position: relative;
+        }
+
+        p:not(first-of-type) span:first-of-type {
+            font-size: 12px;
+            position: absolute;
+            top: 42px;
+            left: 82px;
+        }
+
+        label {
+            height: 36px;
+            line-height: 36px;
+            color: #818181;
+            margin-right: 10px;
+        }
+
+        input {
+            width: 280px;
+            height: 36px;
+            border: 1px solid #E5E5E5;
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        input::placeholder {
+            color: #DADADB;
+        }
+
+        .code {
+            width: 175px;
+        }
+
+        .createCode {
+            display: inline-block;
+            width: 90px;
+            height: 36px;
+            line-height: 36px;
+            background: white;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 4px;
+            margin-left: 8px;
+            position: relative;
+            top: 1px;
+        }
+
+        .btn {
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            background: #BACFFC;
+            color: white;
+            font-size: 16px;
+            font-family: "宋体";
+            font-weight: bold;
+            border: none;
+            border-radius: 24px;
+        }
+    </style>
+    <script src="../js/common.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script src="../js/ajax.js"></script>
+    <script src="../js/request.js"></script>
+    <script src="../js/register.js"></script>
+</head>
+
+<body>
+    <div class="form">
+        <h1>欢迎注册</h1>
+        <p>已有账号？<a href="login.html">登录</a></p>
+
+        <p>
+            <label>用&ensp;户&ensp;名</label>
+            <input class="user" type="text" placeholder="请设置用户名">
+            <span class="user_span"></span>
+        </p>
+        <p>
+            <label>密&emsp;&emsp;码</label>
+            <input class="pwd" type="text" placeholder="请设置密码">
+            <span class="pwd_span"></span>
+        </p>
+        <p>
+            <label>确认密码</label>
+            <input class="repwd" type="text" placeholder="请确认密码">
+            <span class="repwd_span"></span>
+        </p>
+        <p>
+            <label>手&ensp;机&ensp;号</label>
+            <input class="phone" type="text" placeholder="请填写手机号">
+            <span class="phone_span"></span>
+        </p>
+        <p>
+            <label>邮&emsp;&emsp;箱</label>
+            <input class="email" type="text" placeholder="请填写邮箱">
+            <span class="email_span"></span>
+        </p>
+        <p>
+            <label>验&ensp;证&ensp;码</label>
+            <input class="code" type="text" placeholder="请填写验证码">
+            <span class="code_span"></span>
+            <span class="createCode">获取验证码</span>
+        </p>
+        <p>
+            <button class="btn">注册</button>
+        </p>
+    </div>
+</body>
+
+<script>
+    var userInp = document.querySelector(".user");
+    var userSpan = document.querySelector(".user_span");
+    var pwdInp = document.querySelector(".pwd");
+    var pwdSpan = document.querySelector(".pwd_span");
+    var repwdInp = document.querySelector(".repwd");
+    var repwdSpan = document.querySelector(".repwd_span");
+    var phoneInp = document.querySelector(".phone");
+    var phoneSpan = document.querySelector(".phone_span");
+    var emailInp = document.querySelector(".email");
+    var emailSpan = document.querySelector(".email_span");
+    var codeInp = document.querySelector(".code");
+    var codeSpan = document.querySelector(".code_span");
+    var createCode = document.querySelector(".createCode");
+    var btn = document.querySelector(".btn");
+
+    var spanList = document.querySelectorAll(".form span");
+    var inputList = document.querySelectorAll(".form input");
+
+
+
+    // 用户名由数字,字母,下划线,$组成 6-12位,不能以数字开头
+    // 密码由数字,字母,下划线,$组成 6-12位
+
+    var userFlag = false;
+    userInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        userInp.style.outlineColor = "#7C91D7";
+    }
+
+    userInp.onblur = function () {
+        var reg = /^[a-zA-Z_$][\w$]{5,11}$/;
+        var user = userInp.value;
+        userFlag = false;
+
+        judgeUser(user).then((res) => {
+            userSpan.textContent = res.msg;
+            userInp.style.borderColor = "#E5E5E5";
+            userFlag = true;
+        }).catch((res) => {
+            userInp.style.borderColor = "red";
+            userSpan.textContent = res.msg;
+            userSpan.style.color = "red";
+        });
+    }
+
+    // 将以下代码进行封装为上述
+    //     if (user) {
+    //         if (reg.test(user)) {
+
+    //             isExistUsername({ username: user }).then(
+    //                 res => {
+    //                     if (res.status) {
+    //                         userSpan.textContent = "";
+    //                         userInp.style.borderColor = "#E5E5E5";
+    //                         userFlag = true;
+    //                     } else {
+    //                         userInp.style.borderColor = "red";
+    //                         userSpan.textContent = "用户名已存在";
+    //                         userSpan.style.color = "red";
+    //                     }
+    //                 }
+    //             ).catch(err => { throw err });
+    //         } else {
+    //             userInp.style.borderColor = "red";
+    //             userSpan.textContent = "用户名由数字,大小写字母,_,$组成 6-12位,不能以数字开头";
+    //             userSpan.style.color = "red";
+    //         }
+    //     } else {
+    //         userInp.style.borderColor = "red";
+    //         userSpan.textContent = "用户名不能为空";
+    //         userSpan.style.color = "red";
+    //          }
+    //     }
+
+    var pwdFlag = false;
+    pwdInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        pwdInp.style.outlineColor = "#7C91D7";
+    }
+
+    pwdInp.onblur = function () {
+        var reg = /^[\w$]{6,12}$/;
+        var pwd = pwdInp.value;
+        pwdFlag = false;
+
+        judgePwd(pwd).then(function (res) {
+            pwdSpan.innerHTML = res.msg;
+            pwdSpan.style.color = "black";
+        }).catch(function (res) {
+            pwdSpan.textContent = res.msg;
+            pwdSpan.style.color = "red";
+            pwdInp.style.borderColor = "red";
+        });
+
+        // if (pwd) {
+        //     if (reg.test(pwd)) {
+
+        //         pwdInp.style.borderColor = "#E5E5E5";
+        //         pwdFlag = true;
+
+        //         var numFlag = false;
+        //         var smallFlag = false;
+        //         var bigFlag = false;
+        //         var speFlag = false;
+
+        //         var numReg = /\d/;
+        //         var smallReg = /[a-z]/;
+        //         var bigReg = /[A-Z]/;
+        //         var speReg = /[_$]/;
+
+        //         if (numReg.test(pwd)) {
+        //             numFlag = true;
+        //         }
+        //         if (smallReg.test(pwd)) {
+        //             smallFlag = true;
+        //         }
+        //         if (bigReg.test(pwd)) {
+        //             bigFlag = true;
+        //         }
+        //         if (speReg.test(pwd)) {
+        //             speFlag = true;
+        //         }
+
+        //         var sum = numFlag + smallFlag + bigFlag + speFlag;
+
+        //         if (sum == 4) {
+        //             pwdSpan.innerHTML = '密码强度:<span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:60px;"></span><span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:120px;"></span><span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:180px;"></span><span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:240px;"></span>';
+        //             pwdSpan.style.color = "black";
+        //         }
+        //         if (sum == 3) {
+        //             pwdSpan.innerHTML = '密码强度:<span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:60px;"></span><span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:120px;"></span><span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:180px;"></span>';
+        //             pwdSpan.style.color = "black";
+        //         }
+        //         if (sum == 2) {
+        //             pwdSpan.innerHTML = '密码强度:<span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:60px;"></span><span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:120px;"></span>';
+        //             pwdSpan.style.color = "black";
+        //         }
+        //         if (sum == 1) {
+        //             pwdSpan.innerHTML = '密码强度:<span style="background:#7C91D7;width:50px;height:10px;display:inline-block;position:absolute;top:3px;left:60px;"></span>';
+        //             pwdSpan.style.color = "black";
+        //         }
+        //     } else {
+        //         pwdSpan.textContent = "密码由数字,字母,下划线,$组成 ,6-12位";
+        //         pwdSpan.style.color = "red";
+        //         pwdInp.style.borderColor = "red";
+        //     }
+        // } else {
+        //     pwdSpan.textContent = "密码不能为空";
+        //     pwdSpan.style.color = "red";
+        //     pwdInp.style.borderColor = "red";
+        // }
+    }
+
+    var repwdFlag = false;
+    repwdInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        repwdInp.style.outlineColor = "#7C91D7";
+    }
+
+    repwdInp.onblur = function () {
+        var reg = /^[\w$]{6,12}$/;
+        var repwd = repwdInp.value;
+        repwdFlag = false;
+
+        judgeRepwd(repwd).then(function (res) {
+            repwdSpan.textContent = res.msg;
+            repwdInp.style.borderColor = "#E5E5E5";
+            repwdFlag = res.status;
+        }).catch(function (res) {
+            repwdSpan.textContent = res.msg;
+            repwdSpan.style.color = "red";
+            repwdInp.style.borderColor = "red";
+        });
+
+        // if (repwd) {
+        //     if (reg.test(repwd)) {
+        //         if (repwd == pwdInp.value) {
+        //             repwdSpan.textContent = "";
+        //             repwdInp.style.borderColor = "#E5E5E5";
+        //             repwdFlag = true;
+        //         } else {
+        //             repwdSpan.textContent = "确认密码与密码不一致";
+        //             repwdSpan.style.color = "red";
+        //             repwdInp.style.borderColor = "red";
+        //         }
+        //     } else {
+        //         repwdSpan.textContent = "确认密码由数字,字母,下划线,$组成 ,6-12位";
+        //         repwdSpan.style.color = "red";
+        //         repwdInp.style.borderColor = "red";
+        //     }
+        // } else {
+        //     repwdSpan.textContent = "确认密码不能为空";
+        //     repwdSpan.style.color = "red";
+        //     repwdInp.style.borderColor = "red";
+        // }
+    }
+
+    var phoneFlag = false;
+    phoneInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        phoneInp.style.outlineColor = "#7C91D7";
+    }
+
+    phoneInp.onblur = function () {
+        var reg = /^1[3-9]\d{9}$/;
+        var phone = phoneInp.value;
+        phoneFlag = false;
+
+        judgePhone(phone).then(res => {
+            phoneSpan.textContent = res.msg;
+            phoneInp.style.borderColor = "#E5E5E5";
+            phoneFlag = true;
+        }).catch(res => {
+            phoneSpan.textContent = res.msg;
+            phoneSpan.style.color = "red";
+            phoneInp.style.borderColor = "red";
+        });
+
+        // if (phone) {
+        //     if (reg.test(phone)) {
+
+        //         isExistPhone({ phone }).then(
+        //             res => {
+        //                 if (res.status) {
+        //                     phoneSpan.textContent = "";
+        //                     phoneInp.style.borderColor = "#E5E5E5";
+        //                     phoneFlag = true;
+        //                 } else {
+        //                     phoneSpan.textContent = "手机号已注册";
+        //                     phoneSpan.style.color = "red";
+        //                     phoneInp.style.borderColor = "red";
+        //                 }
+        //             }
+        //         );
+
+        //     } else {
+        //         phoneSpan.textContent = "请输入正确的手机号";
+        //         phoneSpan.style.color = "red";
+        //         phoneInp.style.borderColor = "red";
+        //     }
+        // } else {
+        //     phoneSpan.textContent = "手机号不能为空";
+        //     phoneSpan.style.color = "red";
+        //     phoneInp.style.borderColor = "red";
+        // }
+    }
+
+    var emailFlag = false;
+    emailInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        emailInp.style.outlineColor = "#7C91D7";
+    }
+
+    emailInp.onblur = function () {
+        var reg = /^\S{6,12}@(qq|163|126|139|sohu|gmail|hotmail)\.com$/;
+        var email = emailInp.value;
+        emailFlag = false;
+
+        judgeEmail(email).then(res => {
+            emailSpan.textContent = res.msg;
+            emailInp.style.borderColor = "#E5E5E5";
+            emailFlag = true;
+        }).catch(res => {
+            emailSpan.textContent = res.msg;
+            emailSpan.style.color = "red";
+            emailInp.style.borderColor = "red";
+        });
+
+        // if (email) {
+        //     if (reg.test(email)) {
+
+        //         isExistEmail({ email }).then(
+        //             res => {
+        //                 if (res.status) {
+        //                     emailSpan.textContent = "";
+        //                     emailInp.style.borderColor = "#E5E5E5";
+        //                     emailFlag = true;
+        //                 } else {
+        //                     emailSpan.textContent = "邮箱已注册";
+        //                     emailSpan.style.color = "red";
+        //                     emailInp.style.borderColor = "red";
+        //                 }
+        //             }
+        //         );
+
+        //     } else {
+        //         emailSpan.textContent = "请输入正确的邮箱";
+        //         emailSpan.style.color = "red";
+        //         emailInp.style.borderColor = "red";
+        //     }
+        // } else {
+        //     emailSpan.textContent = "邮箱不能为空";
+        //     emailSpan.style.color = "red";
+        //     emailInp.style.borderColor = "red";
+        // }
+    }
+
+    createCode.onmousedown = function () {
+        this.style.boxShadow = "#7C91D7 2px 2px 1px";
+        this.style.position = "relative";
+        this.style.right = "2px";
+        this.style.bottom = "2px";
+    }
+
+    createCode.onmouseup = function () {
+        this.style.boxShadow = "none";
+        this.style.position = "static";
+    }
+
+    createCode.onclick = function () {
+        createCode.textContent = randCode();
+        createCode.style.fontSize = "14px";
+        codeInp.value = "";
+        codeSpan.textContent = "";
+    }
+
+    var codeFlag = false;
+    codeInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        codeInp.style.outlineColor = "#7C91D7";
+    }
+
+    codeInp.onblur = function () {
+        var code = codeInp.value;
+        var reg = new RegExp(code, "i");
+        codeFlag = false;
+
+        judgeCode(code).then(res => {
+            codeSpan.textContent = res.msg;
+            codeInp.style.borderColor = "#E5E5E5";
+            codeFlag = true;
+        }).catch(res => {
+            codeSpan.textContent = res.msg;
+            codeSpan.style.color = "red";
+            codeInp.style.borderColor = "red";
+        });
+        // if (code) {
+        //     if (reg.test(createCode.textContent)) {
+        //         codeSpan.textContent = "";
+        //         codeInp.style.borderColor = "#E5E5E5";
+        //         codeFlag = true;
+        //     } else {
+        //         codeSpan.textContent = "验证码输入有误,请重新输入";
+        //         codeSpan.style.color = "red";
+        //         codeInp.style.borderColor = "red";
+        //     }
+        // } else {
+        //     codeSpan.textContent = "验证码不能为空";
+        //     codeSpan.style.color = "red";
+        //     codeInp.style.borderColor = "red";
+        // }
+    }
+
+    btn.onmousedown = function () {
+        this.style.outline = "none";
+        this.style.backgroundColor = "#7C91D7";
+    }
+
+    btn.onmouseup = function () {
+        this.style.backgroundColor = "#BACFFC";
+    }
+
+    btn.onclick = function () {
+
+        // 失焦事件中有异步任务，会导致它的flag改变延迟，从而导致下面的判断不能执行
+        // userInp.onblur();
+        // repwdInp.onblur();
+        // phoneInp.onblur();
+        // emailInp.onblur();
+        // pwdInp.onblur();
+        // codeInp.onblur();
+
+        // if (userFlag && pwdFlag && repwdFlag && emailFlag && phoneFlag && codeFlag) {
+
+        //     var username = userInp.value;
+        //     var password = phoneInp.value;
+        //     var phone = phoneInp.value;
+        //     var email = emailInp.value;
+
+        //     register({ username, password, phone, email }).then(
+        //         res => {
+        //             if (res.status) {
+        //                 location.href = "login.html";
+        //             } else {
+        //                 alert("注册失败");
+        //             }
+        //         }
+        //     ).catch(err => { throw err });  // 如果有错误，则抛出
+
+        // }
+
+
+        var user = userInp.value;
+        var pwd = pwdInp.value;
+        var repwd = repwdInp.value;
+        var phone = phoneInp.value;
+        var email = emailInp.value;
+        var code = codeInp.value; //用户输入的
+
+        var list = [judgeUser(user), judgePwd(pwd), judgeRepwd(repwd), judgePhone(phone), judgeEmail(email), judgeCode(code)]
+
+        Promise.allSettled(list).then(function (arr) {
+            console.log(arr);
+            var flag = arr.every(result => result.status == "fulfilled");
+            if (flag) {
+                register({ username: user, password: pwd, phone, email }).then(
+                    res => {
+                        if (res.status) {
+                            location.href = "login.html";
+                        } else {
+                            alert("注册失败");
+                        }
+                    }
+                ).catch(err => { throw err });  // 如果有错误，则抛出
+            } else {
+                arr.forEach((result, index) => {
+                    console.log(result, index);
+                    if (result.status == "fulfilled") {
+                        spanList[index].textContent = "";
+                        spanList[index].style.borderColor = "#E5E5E5";
+                    } else {
+                        var { reason: { msg } } = result;
+                        spanList[index].textContent = msg;
+                        spanList[index].style.color = "red";
+                        inputList[index].style.borderColor = "red";
+                    }
+                })
+            }
+        }).catch(function (err) {
+            console.log(err);
+        })
+
+    }
+
+
+</script>
+
+</html>

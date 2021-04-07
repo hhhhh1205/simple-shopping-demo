@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../pagination/pagination.css">
+    <link rel="stylesheet" href="../css/goodsList.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <script src="../js/cookie.js"></script>
+    <script src="../pagination/common/jquery.min.js"></script>
+    <script src="../pagination/jquery.pagination.js"></script>
+    <script src="../js/request.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="outer container-fluid">
+        <div class="container">
+            <div class="index"><a href="index.html">首页</a></div>
+            <div class="tips">
+                <a href="register.html">注册</a>
+                <a href="login.html">登录</a>
+            </div>
+        </div>
+    </div>
+    <div class="wrap container">
+        <div class="search_bar">
+            <div class="searchBox">
+                <input type="text" class="searchCon">
+                <button class="searchBtn">搜索</button>
+            </div>
+            <div class="orderBox">
+                <div class="orderColBox">
+                    <label>
+                        编号
+                        <input type="radio" checked name="orderCol" class="orderCol" value="id">
+                    </label>
+                    <label>
+                        商品id
+                        <input type="radio" name="orderCol" class="orderCol" value="productId">
+                    </label>
+                    <label>
+                        名称
+                        <input type="radio" name="orderCol" class="orderCol" value="goodsName">
+                    </label>
+                    <label>
+                        价格
+                        <input type="radio" name="orderCol" class="orderCol" value="price">
+                    </label>
+                </div>
+
+                <div class="orderTypeBox">
+                    <label>
+                        升序
+                        <input type="radio" checked name="orderType" class="orderType" value="asc">
+                    </label>
+                    <label>
+                        降序
+                        <input type="radio" name="orderType" class="orderType" value="desc">
+                    </label>
+                </div>
+
+                <div class="showNumBox">
+                    <select class="select">
+                        <option value="5">每页显示05条</option>
+                        <option value="10" selected>每页显示10条</option>
+                        <option value="15">每页显示15条</option>
+                        <option value="20">每页显示20条</option>
+                    </select>
+                </div>
+
+                <button class="resetBtn button button-3d button-primary button-rounded form-control">重置</button>
+            </div>
+        </div>
+    </div>
+    <div class="goodsList container">
+        <!-- <li>
+            <a href="">
+                <img src="https://img11.360buyimg.com/n7/jfs/t1/88913/14/1277/360157/5dbc0d7eE921d1187/b5b6a9c4a2c58c7b.jpg"
+                    alt="">
+                <p class="price">￥5599.00</p>
+                <p class="title">Apple iPhone 11 (A2223) 128GB 紫色 移动联通电信4G手机 双卡双待</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <img src="https://img11.360buyimg.com/n7/jfs/t1/88913/14/1277/360157/5dbc0d7eE921d1187/b5b6a9c4a2c58c7b.jpg"
+                    alt="">
+                <p class="price">￥5599.00</p>
+                <p class="title">Apple iPhone 11 (A2223) 128GB 紫色 移动联通电信4G手机 双卡双待</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <img src="https://img11.360buyimg.com/n7/jfs/t1/88913/14/1277/360157/5dbc0d7eE921d1187/b5b6a9c4a2c58c7b.jpg"
+                    alt="">
+                <p class="price">￥5599.00</p>
+                <p class="title">Apple iPhone 11 (A2223) 128GB 紫色 移动联通电信4G手机 双卡双待</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <img src="https://img11.360buyimg.com/n7/jfs/t1/88913/14/1277/360157/5dbc0d7eE921d1187/b5b6a9c4a2c58c7b.jpg"
+                    alt="">
+                <p class="price">￥5599.00</p>
+                <p class="title">Apple iPhone 11 (A2223) 128GB 紫色 移动联通电信4G手机 双卡双待</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <img src="https://img11.360buyimg.com/n7/jfs/t1/88913/14/1277/360157/5dbc0d7eE921d1187/b5b6a9c4a2c58c7b.jpg"
+                    alt="">
+                <p class="price">￥5599.00</p>
+                <p class="title">Apple iPhone 11 (A2223) 128GB 紫色 移动联通电信4G手机 双卡双待</p>
+            </a>
+        </li> -->
+    </div>
+    <div class="pageBox m-style container"></div>
+</body>
+
+<script>
+
+    $(function () {
+
+        if (document.cookie) {
+
+            var lguser = getCookie("lguser");
+            if (lguser) {
+
+                $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
+
+            }
+        }
+
+        var key = "";
+        var orderCol = "id";
+        var orderType = "asc";
+        var pageIndex = 1;
+        var showNum = 10;
+        var goodsType = "手机";
+
+        // http://localhost/myStudy/two/day35/html/goodsList.html?goodsType=%E6%89%8B%E6%9C%BA
+        var url = document.URL;
+        var index = url.indexOf("=");
+        var str = url.slice(index + 1);  // %E6%89%8B%E6%9C%BA
+        // console.log(decodeURIComponent(str));  // 手机
+
+        goodsType = decodeURIComponent(str);
+
+        getGoods();
+
+        $(".orderCol").click(function () {
+            orderCol = $(this).val();
+            console.log(orderCol);
+            getGoods();
+        })
+
+        $(".orderType").click(function () {
+            orderType = $(this).val();
+            console.log(orderType);
+            getGoods();
+        })
+
+        $(".select").change(function () {
+            showNum = $(this).val();
+            getGoods();
+        })
+
+        $(".searchCon").keypress(function (e) {
+            var e = e || window.event;
+            var keyCode = e.which || e.keyCode;
+            if (keyCode == 13) {
+                $(".searchBtn").click();
+            }
+        })
+
+        $(".searchBtn").click(function () {
+            key = $(".searchCon").val().trim();
+            getGoods();
+        })
+
+        $(".resetBtn").click(function () {
+            $(".searchCon").val("");
+            $(".orderCol").eq(0).prop("checked", "checked");
+            $(".orderType").eq(0).prop("checked", "checked");
+            $(".select").val("10");
+
+            key = "";
+            orderCol = "id";
+            orderType = "asc";
+            pageIndex = 1;
+            showNum = 10;
+            getGoods();
+        })
+
+
+        function getGoods() {
+            goodsSearchAllLimit({ key, orderCol, orderType, pageIndex, showNum, goodsType }).then(res => {
+                // console.log(res);
+
+                if (res.status) {
+
+                    var { status, count, currentPage, maxPage, data } = res;
+
+                    var html = "";
+                    data.forEach(({ id, productId, goodsName, slogan, price, smallList, img, cat }) => {
+                        html += `  <li>
+                            <a href="./goodsDetail.html?gid=${productId}">
+                                <img src="${img}"
+                                    alt="">
+                                <p class="price">￥${price}</p>
+                                <p class="title">${goodsName}</p>
+                            </a>
+                        </li>`
+                    })
+                    $(".goodsList").html(html);
+                } else {  // 如果没有数据，强制跳到主页面
+                    // html = `<p style="text-align: center;font-size:20px;margin-top:50px;">暂无数据</p>`
+                    // $(".goodsList").html(html);
+                    location.href = "index.html";
+                }
+
+                $(".pageBox").pagination({
+                    totalData: count,
+                    showData: showNum,
+                    pageCount: maxPage,
+                    current: pageIndex,
+                    mode: "fixed",
+                    count: 4,
+                    copy: true,
+                    homePage: "首页",
+                    endPage: "尾页",
+                    jump: true,
+                    callback(api) {
+                        console.log(api.getCurrent());
+                        pageIndex = api.getCurrent();
+                        getGoods();
+                    }
+                })
+
+            })
+
+        }
+
+    })
+
+
+    function exit() {
+        setCookie("lguser", "", -1);
+        location.reload();
+    }
+
+</script>
+
+</html>

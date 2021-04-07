@@ -1,0 +1,180 @@
+.container { width: 1180px; margin: 0 auto; position: relative;}
+.container-fluid { width: 100%;}
+i {font-style: normal;}
+.outer {
+    height: 50px;
+    line-height: 50px;
+    position: relative;
+}
+
+.logo {
+    float: left;
+}
+
+.logo img {
+    height: 36px;
+}
+
+.logo img:first-of-type {
+    margin-right: 5px;
+}
+
+.tips {
+    position: absolute;
+    right: 0px;
+}
+
+.tips a {
+    margin-right: 20px;
+}
+
+
+.tips a:hover {
+    color: red;
+}
+
+/* 轮播图 */
+.swiper {
+    position: relative;
+    overflow: hidden;
+}
+
+.swiper span {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+    z-index: 1;
+    font-size: 50px;
+    color: rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.swiper span:last-of-type{
+    right: 0;
+}
+
+.swiper span:hover{
+    color: rgba(0,0,0,0.8);
+}
+
+.swiper ul {
+    display: flex;
+    position: relative;
+}
+
+.swiper ol {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    bottom: 15px;
+    transform: translateX(-50%);
+}
+
+.swiper ol li {
+    width: 10px;
+    height: 10px;
+    background-color: #fff;
+    border: 1px solid #6d6a6a;
+    border-radius: 50%;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.swiper ol .active {
+    background-color: #878787;
+    border: 2px solid #ccc;
+}
+/* end--轮播图 */
+
+/* 商品信息 */
+.goods {
+    background-color: #F5F5F5;
+}
+
+.goodstitle {
+    padding-top: 30px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 22px;
+    font-family: Helvetica,Arial,sans-serif;
+    display: flex;
+    justify-content: space-between;
+    user-select: none;
+}
+
+.goodstitle a:hover{
+    color: rgb(241, 155, 97);
+    cursor: pointer;
+}
+
+.goodstitle .seeAll i {
+    margin-right: 10px;
+}
+
+.goodstitle .seeAll .iconfont {
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    font-size: 20px;
+}
+
+.phoneList, .earList, .musicList, .notebookList, .lineList, .padList, .iwatchList, .eyeList, .pillowList {
+    overflow: hidden;
+    min-height: 304px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.phoneList li, .earList li, .musicList li, .notebookList li, .lineList li, .padList li, .iwatchList li, .eyeList li, .pillowList li {
+    float: left;
+    width: 18%;
+    box-sizing: border-box;
+    padding: 10px;
+    transition: 0.5s;
+    background-color: #fff;
+}
+
+.phoneList li:hover,  .earList li:hover, .musicList li:hover, .notebookList li:hover, .lineList li:hover,  .padList li:hover, .iwatchList li:hover, .eyeList li:hover, .pillowList li:hover {
+    position: relative;
+    top: -3px;
+    box-shadow: 0px 5px 10px 3px rgba(0,0,0,0.1);
+}
+
+.phoneList li img, .earList li img, .musicList li img, .notebookList li img, .lineList li img, .padList li img, .iwatchList li img, .eyeList li img, .pillowList li img {
+    width: 100%;
+}
+
+.phoneList .price, .earList .price, .musicList .price, .notebookList .price, .lineList .price, .padList .price, .iwatchList .price, .eyeList .price, .pillowList .price {
+    color: red;
+}
+
+.phoneList .title, .earList .title, .musicList .title, .notebookList .title, .lineList .title, .padList .title, .iwatchList .title, .eyeList .title, .pillowList .title  {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+/* end--商品信息 */
+
+.footer {
+    background-color: #F5F5F5;
+    padding-top: 50px;
+    overflow: hidden;
+}
+
+/* 垂直侧边导航栏 */
+.heigNav {
+    border: 1px solid #ccc;
+    position: absolute;
+    /* top: 20px; */
+    right: 20px;
+}
+
+.heigNav li {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+

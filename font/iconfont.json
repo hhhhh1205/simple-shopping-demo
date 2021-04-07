@@ -1,0 +1,23 @@
+{
+  "id": "2468464",
+  "name": "华为商城",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13479258",
+      "name": "左",
+      "font_class": "zuo",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "20213127",
+      "name": "右",
+      "font_class": "you",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    }
+  ]
+}

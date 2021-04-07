@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../pagination/pagination.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../css/goodsDetail.css">
+    <script src="../js/cookie.js"></script>
+    <script src="../pagination/common/jquery.min.js"></script>
+    <script src="../pagination/jquery.pagination.js"></script>
+    <script src="../js/request.js"></script>
+</head>
+
+<body>
+    <div class="outer container-fluid">
+        <div class="container">
+            <div class="index"><a href="index.html">首页</a></div>
+            <div class="tips">
+                <a href="register.html">注册</a>
+                <a href="login.html">登录</a>
+            </div>
+        </div>
+    </div>
+    <div class="wrap container">
+        <div class="left">
+            <!-- <div class="wrapBox">
+                <div class="shadow"></div>
+                <img class="bigImg" src="../images/small.jpg" alt="">
+            </div>
+            <ul class="switchList">
+                <li class="active"><img src="../images/small.jpg" bigImg="../images/big.jpg" alt=""></li>
+                <li><img src="../images/girlsmall1.jpg" bigImg="../images/girlbig1.jpg" alt=""></li>
+                <li><img src="../images/girlsmall2.jpg" bigImg="../images/girlbig2.jpg" alt=""></li>
+                <li><img src="../images/girlsmall3.jpg" bigImg="../images/girlbig3.jpg" alt=""></li>
+                <li><img src="../images/girlsmall4.jpg" bigImg="../images/girlbig4.jpg" alt=""></li>
+            </ul>
+            <div class="showBigImg">
+                <img class="bigImg" src="../images/big.jpg" alt="">
+            </div> -->
+        </div>
+        <div class="right">
+            <h2>
+                <!-- Apple iPhone 11 (A2223) 128GB 黑色 移动联通电信4G手机 双卡双待 -->
+            </h2>
+            <div class="price">
+                <!-- <p>价&emsp;&emsp;格</p>
+                <span><i>￥</i>4999.00</span>
+                <p>促&emsp;&emsp;销</p>
+                <span><i>赠送积分</i>购买即赠商城积分，积分可抵现~</span> -->
+            </div>
+            <div class="about">
+                <p>服务说明</p>
+                <span>湖北>武汉>江夏区</span><i>现货</i>
+                <p><b>已满48元已免运费</b><b>提供商品、发货开票及售后有服务</b></p>
+                <p>商品编码</p>
+                <span class="goodsid">
+                    <!-- 23432525321 -->
+                </span>
+            </div>
+            <div class="goodsinfo">
+                <div class="chocolor">
+                    <p>选择颜色</p>
+                    <div class="chobox">
+                        <span>釉白色</span>
+                        <span>亮黑色</span>
+                        <span>秘银色</span>
+                        <span>夏日胡杨</span>
+                        <span>秋日胡杨</span>
+                    </div>
+                </div>
+                <div class="choversion">
+                    <p>选择版本</p>
+                    <div class="chobox">
+                        <span>5G全网通 8GB+256GB</span>
+                        <span>5G全网通 8GB+512GB</span>
+                        <span>5G全网通 8GB+128GB</span>
+                    </div>
+                </div>
+                <div class="chomenu">
+                    <p>选择套餐</p>
+                    <div class="chobox">
+                        <span>官方标配</span>
+                    </div>
+                </div>
+                <div class="choservice">
+                    <p>保障服务</p>
+                    <div class="chobox">
+                        <span>无忧服务 ￥1699</span>
+                        <span>损坏服务 ￥499</span>
+                        <span>延长服务宝一年 ￥468</span>
+                    </div>
+                </div>
+            </div>
+            <div class="buyBox">
+                <div class="buyNum">
+                    <input type="text" value="1">
+                    <div class="calcBox">
+                        <span class="reduce">-</span>
+                        <span class="add">+</span>
+                    </div>
+                </div>
+                <button id="addToCar" class="button button-raised button-highlight">
+                    加入购物车
+                </button>
+                <button id="buyNow" class="button button-raised button-caution">
+                    立即下单
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="detailBox">
+
+    </div>
+</body>
+
+<script>
+
+    if (document.cookie) {
+
+        var lguser = getCookie("lguser");
+        if (lguser) {
+
+            $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
+
+        }
+    }
+
+    var search = location.search;
+    if (search) {
+        var gid = search.split("=")[1];
+        console.log(gid);
+
+        goodsSearchByGoodsId({ gid }).then(res => {
+            // console.log(res);
+            var { status, msg, data: { goodsName, price, smallList, bigList, slogan } } = res;
+            if (status) {
+                $(".wrap .left").html(`
+                    <div class="wrapBox">
+                        <div class="shadow"></div>
+                        <img class="smallImg" src="${bigList[0]}" alt="">
+                    </div>
+                    <ul class="switchList">
+                        
+                    </ul>
+                    <div class="showBigImg">
+                        <img class="bigImg" src="${bigList[0]}" alt="">
+                    </div>
+                `);
+
+                var switchListHtml = "";
+                for (var i = 0; i < smallList.length; i++) {
+                    switchListHtml += `<li><img src="${smallList[i]}" bigImg="${bigList[i]}" alt=""></li>`;
+                }
+                $(".wrap .left .switchList").html(switchListHtml);
+                $(".wrap .left .switchList li").eq(0).addClass("active");
+
+                $(".wrap .right h2").text(`${goodsName}`);
+                $(".wrap .right .price").html(`<p>价&emsp;&emsp;格</p>
+                <span><i>￥</i>${price}</span>
+                <p>促&emsp;&emsp;销</p>
+                <span><i>赠送积分</i>购买即赠商城积分，积分可抵现~</span>`);
+                $(".wrap .right .about .goodsid").text(`${gid}`);
+
+
+                // 放大镜
+                $(".wrapBox").mouseenter(function () {
+                    $(".shadow").css({ display: "block" });
+                    var i = 0;
+                    var timer = setInterval(function () {
+                        i += 10;
+                        $(".showBigImg").css({ opacity: i / 100 });
+                        if (i == 100) {
+                            clearInterval(timer);
+                        }
+                    }, 30)
+                })
+
+                $(".wrapBox").mouseleave(function () {
+                    $(".shadow").css({ display: "none" });
+                    $(".showBigImg").css({ opacity: 0 });
+                })
+
+                $(".wrapBox").mousemove(function (e) {
+                    var e = e || window.event;
+
+                    var scale = $(".showBigImg").innerWidth() / $(".shadow").innerWidth();
+
+                    var x = e.pageX - $(".wrapBox").offset().left - $(".shadow").innerWidth() / 2;
+                    var y = e.pageY - $(".wrapBox").offset().top - $(".shadow").innerHeight() / 2;
+
+                    var maxLeft = $(".wrapBox").innerWidth() - $(".shadow").innerWidth();
+                    var maxTop = $(".wrapBox").innerHeight() - $(".shadow").innerHeight();
+
+                    if (x < 0) x = 0;
+                    if (x > maxLeft) x = maxLeft;
+                    if (y < 0) y = 0;
+                    if (y > maxTop) y = maxTop;
+
+                    $(".shadow").css({ left: x })
+                    $(".shadow").css({ top: y })
+
+                    $(".bigImg").css({ left: -x * scale });
+                    $(".bigImg").css({ top: -y * scale });
+                })
+
+                $(".switchList li").each(function () {
+                    $(this).mouseenter(function () {
+                        $(this).addClass("active").siblings().removeClass("active");
+                        $(".wrapBox .smallImg").attr("src", $(this).children().attr("bigImg"));
+                        $(".showBigImg .bigImg").attr("src", $(this).children().attr("bigImg"));
+                    })
+                })
+
+            }
+        })
+
+    } else {
+        location.href = "index.html";
+    }
+
+    $(".buyNum > input").blur(function () {
+        var num = $(".buyNum > input").val();
+        if (num && num > 1) {
+            $(".buyNum > input").val(num);
+        } else {
+            $(".buyNum > input").val(1);
+        }
+    })
+
+    $(".add").click(function () {
+        var num = $(".buyNum > input").val();
+        num++;
+        // console.log(num);
+        $(".buyNum > input").val(num);
+    })
+
+    $(".reduce").click(function () {
+        if ($(".buyNum > input").val() > 1) {
+            var num = $(".buyNum > input").val();
+            num--;
+            // console.log(num);
+            $(".buyNum > input").val(num);
+        }
+    })
+
+    $(document).on("click", "#addToCar", function (e) {
+        console.log("加入购物车");
+        console.log(lguser);
+        if (lguser) {
+
+            var buyNum = $(".buyNum > input").val();
+            goodsAddToShoppingCar({ user: lguser, gid, buyNum }).then(({ status, msg, sql = "" }) => {
+                if (status) {
+                    if (confirm("商品加入购物车成功，是否进入购物车？")) {
+                        location.href = "shoppingCar.html";
+                    }
+                } else {
+                    alert(msg);
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+
+        } else {
+
+            if (confirm("您还未登录账号，是否登录？")) {
+
+                // 用一个参数记录当前网址，方便登录之后通过改参数跳回来
+
+                location.href = "login.html?returnUrl=" + encodeURIComponent(location.href);
+            }
+        }
+    })
+
+
+    function exit() {
+        setCookie("lguser", "", -1);
+        location.reload();
+    }
+
+
+</script>
+
+</html>

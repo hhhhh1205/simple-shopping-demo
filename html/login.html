@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        .form {
+            width: 390px;
+            margin: 100px auto;
+            padding: 30px 35px;
+            background-color: #F1F1F3;
+            border-radius: 20px;
+        }
+
+        p:first-of-type {
+            color: #B5B3B5;
+            margin-top: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        p:first-of-type a {
+            color: #4187F5;
+        }
+
+        p:not(first-of-type) {
+            margin-top: 30px;
+            position: relative;
+        }
+
+        p:not(first-of-type) span:first-of-type {
+            font-size: 12px;
+            position: absolute;
+            top: 42px;
+            left: 50px;
+        }
+
+        label {
+            height: 36px;
+            line-height: 36px;
+            color: #818181;
+            margin-right: 10px;
+        }
+
+        input {
+            width: 280px;
+            height: 36px;
+            border: 1px solid #E5E5E5;
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        input::placeholder {
+            color: #DADADB;
+        }
+
+
+        .btn {
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            background: #BACFFC;
+            color: white;
+            font-size: 16px;
+            font-family: "宋体";
+            font-weight: bold;
+            border: none;
+            border-radius: 24px;
+        }
+
+        .ckbox {
+            width: max-content;
+            height: 26px;
+            line-height: 26px;
+            margin-left: 50px;
+            margin-top: 15px;
+        }
+
+        .ckbox input {
+            width: 12px;
+            height: 12px;
+            margin-right: 10px;
+        }
+    </style>
+    <script src="../js/common.js"></script>
+    <script src="../js/cookie.js"></script>
+    <script src="../js/ajax.js"></script>
+    <script src="../js/request.js"></script>
+</head>
+
+<body>
+    <div class="form">
+        <h1>欢迎登录</h1>
+        <p>没有账号？<a href="register.html">立即注册</a></p>
+        <p>
+            <label>账号</label>
+            <input class="user" type="text" placeholder="用户名/手机号/邮箱">
+            <span class="user_span"></span>
+        </p>
+        <p>
+            <label>密码</label>
+            <input class="pwd" type="text" placeholder="请输入密码">
+            <span class="pwd_span"></span>
+        </p>
+        <p class="ckbox"><label><input type="checkbox">是否记住本账号？</label></p>
+        <p>
+            <button class="btn">登录</button>
+        </p>
+    </div>
+</body>
+
+<script>
+    var userInp = document.querySelector(".user");
+    var userSpan = document.querySelector(".user_span");
+    var pwdInp = document.querySelector(".pwd");
+    var pwdSpan = document.querySelector(".pwd_span");
+    var btn = document.querySelector(".btn");
+    var checkbox = document.querySelector(".ckbox input");
+
+
+    var userFlag = false;
+    var pwdFlag = false;
+
+
+    userInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        userInp.style.outlineColor = "#7C91D7";
+    }
+
+    userInp.onblur = function () {
+        var lguser = userInp.value;
+        userFlag = false;
+        if (!lguser) {
+            userInp.style.borderColor = "red";
+            userSpan.textContent = "用户名不能为空";
+            userSpan.style.color = "red";
+        } else {
+            userSpan.textContent = "";
+            userInp.style.borderColor = "#E5E5E5";
+            userFlag = true;
+        }
+    }
+
+
+    pwdInp.onfocus = function () {
+        // 修改表单被选中后的边框颜色，这个边框不是border，是outline
+        pwdInp.style.outlineColor = "#7C91D7";
+    }
+
+    pwdInp.onblur = function () {
+        var pwd = pwdInp.value;
+        pwdFlag = false;
+        if (!pwd) {
+            pwdSpan.textContent = "密码不能为空";
+            pwdSpan.style.color = "red";
+            pwdInp.style.borderColor = "red";
+        } else {
+            pwdSpan.textContent = "";
+            pwdInp.style.borderColor = "#E5E5E5";
+            pwdFlag = true;
+        }
+    }
+
+    btn.onmousedown = function () {
+        this.style.outline = "none";
+        this.style.backgroundColor = "#7C91D7";
+    }
+
+    btn.onmouseup = function () {
+        this.style.backgroundColor = "#BACFFC";
+    }
+
+    btn.onclick = function () {
+        userInp.onblur();
+        pwdInp.onblur();
+
+
+        if (userFlag && pwdFlag) {
+
+            var name = userInp.value;
+            var pwd = pwdInp.value;
+
+            login({ name, password: pwd }).then(
+                res => {
+                    if (res.status) {
+                        userFlag = false;
+                        pwdFlag = false;
+
+                        var { status, msg, data: { username, password, phone, email } } = res;
+                        userSpan.textContent = "";
+                        userInp.style.borderColor = "#E5E5E5";
+                        userFlag = true;
+
+                        if (pwd == password) {
+                            pwdSpan.textContent = "";
+                            pwdInp.style.borderColor = "#E5E5E5";
+                            pwdFlag = true;
+                        } else {
+                            pwdSpan.textContent = "密码输入有误，请重新输入";
+                            pwdSpan.style.color = "red";
+                            pwdInp.style.borderColor = "red";
+                        }
+
+                        if (userFlag && pwdFlag) {
+                            if (checkbox.checked) {
+                                setCookie("lguser", username, 10);
+                            } else {
+                                setCookie("lguser", username);
+                            }
+
+                            var search = location.search;
+
+                            if (search) {
+
+                                var str = search.split("=")[1];
+                                var url = decodeURIComponent(str);
+                                location.href = url;
+                            } else {
+
+                                location.href = "index.html";
+                            }
+
+                        }
+                    } else {
+                        userInp.style.borderColor = "red";
+                        userSpan.textContent = "该用户不存在，请重新输入";
+                        userSpan.style.color = "red";
+                    }
+
+                }
+            )
+
+        }
+
+    }
+
+
+    // function login() {
+    //     return new Promise((resolve, reject) => {
+    //         $.ajax({
+    //             type: "POST",
+    //             url: "../php/login.php",
+    //             data: { name: userInp.value, password: pwdInp.value },
+    //             dataType: "json",
+    //             success: res => {
+
+    //                 if (res.status) {
+    //                     resolve(res);
+    //                 } else {
+    //                     reject();
+    //                 }
+    //             }
+    //         });
+    //     })
+    // }
+
+
+
+</script>
+
+</html>

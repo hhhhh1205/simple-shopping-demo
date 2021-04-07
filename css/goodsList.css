@@ -1,0 +1,169 @@
+.container {
+    width: 1180px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.container-fluid {
+    width: 100%;
+}
+
+.outer {
+    height: 50px;
+    line-height: 50px;
+    background: rgba(113, 182, 221, 0.3);
+}
+
+.outer>.container{ 
+    position: relative;
+}
+
+.outer .index {
+    position: absolute;
+    left: 0;
+}
+
+.tips {
+    position: absolute;
+    right: 0px;
+}
+
+.outer a {
+    margin-right: 20px;
+}
+
+.outer a:hover {
+    color: red;
+}
+
+.wrap {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.wrap table {
+    width: 100%;
+    table-layout: fixed;
+    border: 1px solid #333;
+    border-collapse: collapse;
+    line-height: 32px;
+    text-align: center;
+}
+
+.wrap table td,
+.wrap table th {
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.search_bar {
+    overflow: hidden;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.search_bar .searchBox {
+    float: left;
+    border: 1px solid gray;
+}
+
+.search_bar .searchBox input {
+    height: 30px;
+    width: 300px;
+    float: left;
+    border: 0;
+    outline: none;
+    text-indent: 10px;
+}
+
+.search_bar .searchBox button {
+    height: 30px;
+    width: 60px;
+    float: left;
+    box-sizing: content-box;
+    border: 0;
+    outline: none;
+}
+
+.search_bar .searchBox {
+    overflow: hidden;
+}
+
+.search_bar .orderBox {
+    float: left;
+    line-height: 30px;
+}
+
+.search_bar .orderBox>*>label {
+    margin-right: 10px;
+}
+
+.search_bar .orderBox>* {
+    margin-left: 20px;
+    float: left;
+    border: 1px dashed #333;
+    padding: 0 20px;
+}
+
+.search_bar .orderBox .showNumBox {
+    border: 0;
+}
+
+.search_bar select {
+    vertical-align: middle;
+    height: 30px;
+    padding: 0 5px;
+}
+
+.showNumBox {
+    position:relative;
+    top: -2px;
+}
+
+.resetBtn {
+    height: 32px !important; 
+    line-height: 32px !important;
+    border: none !important;
+}
+
+.goodsList {
+    overflow: hidden;
+    min-height: 304px;
+    padding: 5px;
+}
+
+.goodsList li {
+    float: left;
+    width: 20%;
+    min-height: 304px;
+    box-sizing: border-box;
+    padding: 10px;
+    transition: 0.5s;
+}
+
+.goodsList li:hover {
+    position: relative;
+    top: -3px;
+    box-shadow: 0px 5px 10px 3px #ccc;
+}
+
+.goodsList li img {
+    width: 100%;
+}
+
+.price {
+    color: red;
+}
+
+.title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.pageBox {
+    width: max-content;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../pagination/common/reset.css">
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <script src="../js/cookie.js"></script>
+    <script src="../js/jquery-1.10.1.min.js"></script>
+    <script src="../js/request.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body style="overflow-x: hidden">
+    <div class="outer container">
+        <div class="logo">
+            <img src="../images/index1.png" alt="">|
+            <img src="../images/index2.png" alt="">
+        </div>
+        <div class="tips">
+            <a href="register.html">注册</a>
+            <a href="login.html">登录</a>
+        </div>
+    </div>
+    <div class="swiper container-fluid">
+        <span class="iconfont icon-zuo"></span>
+        <span class="iconfont icon-you"></span>
+        <ul>
+            <li><img src="../images/1.jpg" alt=""></li>
+            <li><img src="../images/2.jpg" alt=""></li>
+            <li><img src="../images/3.jpg" alt=""></li>
+            <li><img src="../images/4.jpg" alt=""></li>
+            <li><img src="../images/5.jpg" alt=""></li>
+            <li><img src="../images/1.jpg" alt=""></li>
+        </ul>
+        <ol>
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+    </div>
+    <div class="heigNav">
+        <li class="shoppingCar">
+            购物车
+        </li>
+        <li class="phone">
+            手机
+        </li>
+        <li class="ear">
+            耳机
+        </li>
+        <li class="music">
+            音箱
+        </li>
+        <li class="notebook">
+            笔记本电脑
+        </li>
+        <li class="line">
+            转接线
+        </li>
+        <li class="pad">
+            平板
+        </li>
+        <li class="iwatch">
+            手表
+        </li>
+        <li class="eye">
+            护眼仪
+        </li>
+        <li class="pillow">
+            枕头
+        </li>
+        <li class="goToHead">
+            返回顶部
+        </li>
+    </div>
+    <div class="goods container-fluid">
+        <div class="phoneBox container">
+            <div class="goodstitle">
+                <p>手机</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="phoneList">
+
+            </div>
+        </div>
+        <div class="earBox container">
+            <div class="goodstitle">
+                <p>耳机</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="earList">
+
+            </div>
+        </div>
+        <div class="musicBox container">
+            <div class="goodstitle">
+                <p>音箱</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="musicList">
+
+            </div>
+        </div>
+        <div class="notebookBox container">
+            <div class="goodstitle">
+                <p>笔记本电脑</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="notebookList">
+
+            </div>
+        </div>
+        <div class="lineBox container">
+            <div class="goodstitle">
+                <p>转接线</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="lineList">
+
+            </div>
+        </div>
+        <div class="padBox container">
+            <div class="goodstitle">
+                <p>平板</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="padList">
+
+            </div>
+        </div>
+        <div class="iwatchBox container">
+            <div class="goodstitle">
+                <p>手表</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="iwatchList">
+
+            </div>
+        </div>
+        <div class="eyeBox container">
+            <div class="goodstitle">
+                <p>护眼仪</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="eyeList">
+
+            </div>
+        </div>
+        <div class="pillowBox container">
+            <div class="goodstitle">
+                <p>枕头</p>
+                <p><a href="javascript:;" class="seeAll"><i>查看全部</i><span class="iconfont icon-you"></span></a></p>
+            </div>
+            <div class="pillowList">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <img src="../images/index-footer.png" alt="">
+    </div>
+
+</body>
+
+<script>
+
+    $(document).scroll(function () {
+        console.log($(".pillowBox").offset());
+    })
+
+    // 轮播图
+    var timer = null;
+    var i = 0;
+    var moveWidth = $(".swiper > ul > li").innerWidth();
+
+    autoplay();
+
+    $(".swiper ol li").mouseenter(function () {
+        clearInterval(timer);
+        $(this).addClass("active").siblings().removeClass("active");
+        i = $(this).index();
+        move();
+    })
+
+    $(".swiper ol li").mouseleave(function () {
+        autoplay();
+        $(".swiper ul").mouseenter();
+    })
+
+    $(".swiper ul").mouseenter(function () {
+        clearInterval(timer);
+    })
+
+    $(".swiper ul").mouseleave(function () {
+        autoplay();
+    })
+
+    // 左箭头
+    $(".swiper span").eq(0).click(function () {
+        clearInterval(timer);
+        i--;
+        move();
+        autoplay();
+    })
+
+    // 右箭头
+    $(".swiper span").eq(1).click(function () {
+        clearInterval(timer);
+        i++
+        move();
+        autoplay();
+    })
+
+    function autoplay() {
+        clearInterval(timer);
+        timer = setInterval(function () {
+            i++;
+            move();
+        }, 3500);
+    }
+
+    function move() {
+
+        // 点击左箭头
+        if (i < 0) {
+            i = $(".swiper > ul > li").length - 1;
+            $(".swiper > ul").stop().css("left", -moveWidth * i);
+            i--;
+        }
+
+        // 点击右箭头
+        if (i > $(".swiper > ul > li").length - 1) {
+            $(".swiper > ul").stop().css({ left: 0 }); // 先切到第一张
+            i = 0;
+            i++;
+        }
+
+        $(".swiper > ol li").eq(i == $(".swiper > ul > li").length - 1 ? 0 : i).addClass("active").siblings().removeClass("active");
+        $(".swiper ul").stop().animate({ left: -i * moveWidth }, function () {
+            if (i >= $(".swiper > ul > li").length - 1) {
+                i = 0;
+                $(".swiper ul").stop().css("left", 0);
+            }
+        });
+    }
+
+
+    // 全局变量----1、设置默认值；2、始终记录对应字段的变化
+    var key = "";  // 默认搜索的关键词，为空即查询所有数据
+    var orderCol = "id";  // 默认排序列名 id
+    var orderType = "asc";  // 默认排序方式 asc
+    var showNum = 5;  // 默认每页显示数据条数，5条
+    var pageIndex = 1;  // 默认显示第一页
+
+    if (document.cookie) {
+
+        var lguser = getCookie("lguser");
+        if (lguser) {
+
+            $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
+
+        }
+    }
+
+    $(".seeAll").click(function () {
+        var str = $(this).parent().prev().text();
+        location.href = "goodsList.html?goodsType=" + encodeURIComponent(str);
+        // console.log($(this).parent().prev().text());
+    })
+
+    getData("手机").then(succ => {
+        $(".phoneList").html(succ);
+    }).catch(error => {
+        $(".phoneList").html(error);
+    });
+
+    getData("耳机").then(succ => {
+        $(".earList").html(succ);
+    }).catch(error => {
+        $(".earList").html(error);
+    });
+
+    getData("音箱").then(succ => {
+        $(".musicList").html(succ);
+    }).catch(error => {
+        $(".musicList").html(error);
+    });
+
+    getData("笔记本电脑").then(succ => {
+        $(".notebookList").html(succ);
+    }).catch(error => {
+        $(".notebookList").html(error);
+    });
+
+    getData("转接线").then(succ => {
+        $(".lineList").html(succ);
+    }).catch(error => {
+        $(".lineList").html(error);
+    });
+
+    getData("平板").then(succ => {
+        $(".padList").html(succ);
+    }).catch(error => {
+        $(".padList").html(error);
+    });
+
+    getData("手表").then(succ => {
+        $(".iwatchList").html(succ);
+    }).catch(error => {
+        $(".iwatchList").html(error);
+    });
+
+    getData("护眼仪").then(succ => {
+        $(".eyeList").html(succ);
+    }).catch(error => {
+        $(".eyeList").html(error);
+    });
+
+    getData("枕头").then(succ => {
+        $(".pillowList").html(succ);
+    }).catch(error => {
+        $(".pillowList").html(error);
+    });
+
+
+
+    // 获取grade表中所有数据
+    async function getData(goodsType) {
+
+        var res = await goodsSearchAllLimit({ key, orderCol, orderType, pageIndex, showNum, goodsType });
+        // var { status, data: { id, productId, goodsName, slogan, price, smallList, cat } } = res;
+        // console.log(res);
+
+        // var { status, count, maxPage, data } = res;
+
+        if (res.status) {
+            var html = "";
+            res.data.forEach(({ id, productId, goodsName, slogan, price, smallList, img, cat }) => {
+                html += `  <li>
+                            <a href="./goodsDetail.html?gid=${productId}">
+                                <img src="${img}"
+                                    alt="">
+                                <p class="price">￥${price}</p>
+                                <p class="title">${goodsName}</p>
+                            </a>
+                        </li>`
+            })
+            // $(".phoneList").html(html);
+            return html;
+        } else {
+            // $(".phoneList").html("暂无数据");
+            throw html = "暂无数据";
+        }
+    }
+
+
+
+    function exit() {
+        setCookie("lguser", "", -1);
+        location.reload();
+    }
+
+
+
+</script>
+
+</html>

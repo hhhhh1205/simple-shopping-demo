@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../pagination/pagination.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../css/shoppingCar.css">
+    <script src="../js/cookie.js"></script>
+    <script src="../pagination/common/jquery.min.js"></script>
+    <script src="../pagination/jquery.pagination.js"></script>
+    <script src="../js/request.js"></script>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="outer container-fluid">
+        <div class="container">
+            <div class="index"><a href="index.html">首页</a></div>
+            <div class="tips">
+                <a href="register.html">注册</a>
+                <a href="login.html">登录</a>
+            </div>
+        </div>
+    </div>
+    <!-- logo板块 -->
+    <div id="logo_all" class="container">
+        <div class="logo container">
+            <!-- logo区 -->
+            <div class="log">
+                <!-- <img src="../images/" alt=""> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 购物车板块 -->
+    <div id="shoppingCarAll" class="container">
+        <div class="shoppingCarTop container">
+            <span>我的购物车</span>
+            <b>2</b>
+            <select name="湖北省/武汉市/江岸区" id="city">
+                <option value="湖北省/武汉市/江岸区">湖北省/武汉市/江岸区</option>
+                <option value="汉口区">汉口区</option>
+                <option value="江夏区">江夏区</option>
+                <option value="洪山区">洪山区</option>
+            </select>
+            <i>配送至&emsp;</i>
+            <a href="#">再逛逛 >&emsp;</a>
+            <em>自营商品以免运费&emsp;</em>
+        </div>
+
+        <div class="shoppingCarMsg container">
+            <input type="checkbox" name="" id="AllSelect">
+            <label for="AllSelect">全选</label>
+            <b>商品信息</b>
+            <ul>
+                <li>单价(元)</li>
+                <li>数量</li>
+                <li>金额(元)</li>
+                <li>操作</li>
+            </ul>
+        </div>
+
+        <!-- 以下为动态生成区域 -->
+        <div class="shoppingCarCon container">
+            <div class="shoppingCarConTop">
+                <!-- <input type="checkbox" name="" class="check-all">
+                <span>自营保税仓</span> -->
+            </div>
+
+            <div class="shoppingCarConCenter container">
+                <!-- <div class="shoppingCarConCenter01">
+                    <input type="checkbox" name="" class="check-one">
+                    <img src="../images/shoppingCarConCenter01.jpg" alt="">
+                    <div class="shoppingCarConCenter01_01">
+                        <p>【3盒装】hierarchy美国直营包邮水乳不湿清洁护肤有效改善面部肌肤问题</p>
+                        <span>支持7天退货</span>
+                        <a href="#">限时购</a>
+                    </div>
+                    <div class="goodsPrice">￥148</div>
+                    <div class="goodsNums">
+                        <button>-</button>
+                        <input type="number" id="goodsNum">
+                        <button>+</button>
+                        <p>每日限购2件</p>
+                    </div>
+                    <div class="goodsAllPrice">
+                        ￥148
+                    </div>
+                    <div class="del">
+                        <h2>删除</h2>
+                        <p>移入我的收藏</p>
+                    </div>
+                </div> -->
+                <!-- <div class="shoppingCarConBottom container">
+                    <span>活动优惠 ￥0元</span>
+                    <b>预估税费 ￥0元</b>
+                </div> -->
+            </div>
+
+        </div>
+
+        <!-- 底部总结算栏 -->
+        <div class="shoppingCarButtom container">
+            <p>
+                <input type="checkbox" name="" id="AllSelect2">
+                <label for="AllSelect2">全选</label>
+                <a href="javascript:;" id="deteleAll">删除选择商品</a>
+            </p>
+            <div class="goodsAllNum">
+                已选商品 <span> 0 </span> 件
+            </div>
+            <div class="goodsAllPrice2">
+                总价(不含运费):
+                <span>￥0</span>
+            </div>
+            <a href="#" class="pay button button-raised button-caution">去结算</a>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    if (document.cookie) {
+
+        var lguser = getCookie("lguser");
+        if (lguser) {
+
+            $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
+
+        }
+    }
+
+    var user = lguser;
+    if (user) {
+        getShoppingCarList();
+    } else {
+        location.href = "login.html?returnUrl=" + encodeURIComponent(location.href);
+    }
+
+
+
+
+    // 减少商品数量
+    $(document).on('click', '.reduce', function () {
+        if ($(this).next().val() > 1) {
+
+            var id = $(this).parents(".shoppingCarConCenter01").attr("data-id");
+            // console.log(id);
+            goodsUpdateShoppingCarById({ id, buyNum: 1, type: 0 });
+            $(this).next().val($(this).next().val() - 1);
+            var priceOne = $(this).parent().prev().text().slice(1,);
+            var num = $(this).next().val();
+            $(this).parent().next().text(`￥${(priceOne * num).toFixed(2)}`);
+            calcTotalPrice();
+            allCheckedNumbers();
+            allNum();
+
+            if ($(this).next().val() == 1) {
+                $(this).text("");
+                $(this).css("cursor", "no-drop");
+            }
+        }
+    })
+
+    // 增加商品数量
+    $(document).on('click', '.add', function () {
+
+        var id = $(this).parents(".shoppingCarConCenter01").attr("data-id");
+        // console.log(id);
+        goodsUpdateShoppingCarById({ id, buyNum: 1, type: 1 });
+        $(this).prev().val($(this).prev().val() * 1 + 1);
+        $(this).prev().prev().text("-");
+        $(this).prev().prev().css("cursor", "pointer");
+
+        var priceOne = $(this).parent().prev().text().slice(1,);
+        console.log(priceOne);
+        var num = $(this).prev().val();
+        $(this).parent().next().text(`￥${(priceOne * num).toFixed(2)}`);
+        calcTotalPrice();
+        allCheckedNumbers();
+        allNum();
+    })
+
+    // 手动修改商品数量
+    $(document).on('blur', '#goodsNum', function () {
+
+        var id = $(this).parents(".shoppingCarConCenter01").attr("data-id");
+        // console.log(id);
+
+        if ($(this).val() < 1) {
+            $(this).val(1);
+        } else {
+            $(this).val($(this).val());
+        }
+        goodsUpdateShoppingCarById({ id, buyNum: $(this).val(), type: 2 });
+        calcTotalPrice();
+        allCheckedNumbers();
+        allNum();
+    })
+
+    // 全选
+    $(document).on('click', '#AllSelect', function () {
+        var flag = $(this).prop("checked");
+        // console.log(flag);
+
+        $(".check-one").each(function () {
+            $(this).prop('checked', flag);
+        })
+
+        $("#AllSelect2").prop('checked', flag);
+        calcTotalPrice();
+        allCheckedNumbers();
+        allNum();
+    })
+    $(document).on('click', '#AllSelect2', function () {
+        var flag = $(this).prop("checked");
+        // console.log(flag);
+
+        $(".check-one").each(function () {
+            $(this).prop('checked', flag);
+        })
+
+        $("#AllSelect").prop('checked', flag);
+        calcTotalPrice();
+        allCheckedNumbers();
+        allNum();
+    })
+
+    // 反选
+    $(document).on("click", ".check-one", function () {
+        isAllChecked();
+        calcTotalPrice();
+        allCheckedNumbers();
+        allNum();
+    })
+
+    // 单删
+    $(document).on('click', '.del>h2', function () {
+        var id = $(this).parents(".shoppingCarConCenter01").attr("data-id");
+        // console.log(id);
+
+        if (confirm("你确定要删除该商品吗？")) {
+            goodsDeleteShoppingCarById({ ids: id })
+                .then(result => console.log(result))
+                .catch(error => console.log(error));
+
+            $(this).parents(".shoppingCarConCenter01").remove();
+            isAllChecked();
+            calcTotalPrice();
+            allCheckedNumbers();
+            allNum();
+        }
+    })
+
+    // 多删
+    $(document).on("click", "#deteleAll", function () {
+        if ($(".check-one:checked").length > 0) {
+            if (confirm("你确定要删除选中商品吗？")) {
+                var arr = $(".check-one:checked").map(function () {
+                    return $(this).parents(".shoppingCarConCenter01").attr("data-id");
+                }).get();
+                var ids = arr.join(",");
+                // console.log(ids);
+                goodsDeleteShoppingCarById({ ids }).then(result => {
+                    $(".check-one:checked").parents(".shoppingCarConCenter01").remove();
+                    isAllChecked();
+                    calcTotalPrice();
+                    allCheckedNumbers();
+                    allNum();
+                }).catch(error => console.log(error));
+            }
+        } else {
+            alert("还未选中商品");
+        }
+
+
+    })
+
+
+    function allNum() {
+        var sum = 0;
+        $(".goodsNums #goodsNum").each(function () {
+            sum += $(this).val() * 1;
+        })
+        // console.log("总数量" + sum);
+        $(".shoppingCarTop b").text(sum);
+    }
+
+    function allCheckedNumbers() {
+        var sum = 0;
+        $(".check-one:checked").each(function () {
+            $(this).parent().children(".goodsNums").children("#goodsNum").each(function () {
+                let num = $(this).val() * 1;
+                sum += num;
+                // console.log(num, sum);
+            })
+        })
+        $(".goodsAllNum span").text(sum);
+    }
+
+    function calcTotalPrice() {
+        var arr = ["0"];
+        $(".check-one:checked").each(function () {
+            $(this).parent().children(".goodsAllPrice").each(function () {
+                let price = $(this).text().trim().slice(1,);
+                arr.push(price);
+            })
+        })
+        // console.log(arr);
+        let allPrice = arr.reduce((prev, item) => (prev * 1 + item * 1).toFixed(2));
+        $(".goodsAllPrice2 span").text(`￥${allPrice}`);
+
+    }
+
+    function isAllChecked() {
+        var flag = false;
+        if ($(".check-one:checked").length == $(".check-one").length) {
+            if ($(".check-one").length > 0) {
+                flag = true;
+            }
+        }
+        $("#AllSelect").prop('checked', flag);
+        $("#AllSelect2").prop('checked', flag);
+    }
+
+    function getShoppingCarList() {
+        goodsSearchShoppingCarByUser({ user }).then(data => {
+            // console.log(data);
+            var html = "";
+            data.forEach(({ id, gid, goodsName, price, buyNum, img, subTotal }) => {
+                html += `<div class="shoppingCarConCenter01" data-id="${id}" data-gid="${gid}">
+                    <input type="checkbox" name="" class="check-one">
+                    <img src="${img}" class="shoppingCarImg" alt="">
+                    <div class="shoppingCarConCenter01_01">
+                        <p>${goodsName}</p>
+                        <span>支持7天无理由退货</span>
+                        <a href="#">限时购</a>
+                    </div>
+                    <div class="goodsPrice">￥${price}</div>
+                    <div class="goodsNums">
+                        <button class="reduce">${buyNum > 1 ? "-" : ""}</button>
+                        <input type="text" id="goodsNum" value="${buyNum}">
+                        <button class="add">+</button>
+                    </div>
+                    <div class="goodsAllPrice">
+                        ￥${subTotal}
+                    </div>
+                    <div class="del">
+                        <h2>删除</h2>
+                    </div>
+                </div>`;
+            })
+            $(".shoppingCarConCenter").html(html);
+
+            $(".goodsNums .reduce").each(function () {
+                if ($(this).next().val() <= 1) {
+                    $(this).css("cursor", "no-drop");
+                } else {
+                    $(this).css("cursor", "pointer");
+                }
+            })
+
+            // $(this).parents(".shoppingCarConCenter01").attr("data-id");
+
+            $(document).on('click', '.shoppingCarImg', function () {
+                var gid = $(this).parent().attr("data-gid");
+                // console.log($(this).parent().attr("data-gid"));
+                location.href = "goodsDetail.html?gid=" + gid;
+            })
+
+            allNum();
+
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    function exit() {
+        setCookie("lguser", "", -1);
+        location.reload();
+    }
+
+</script>
+
+</html>
