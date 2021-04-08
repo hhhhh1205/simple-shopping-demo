@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>简易华为商城</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../pagination/pagination.css">
     <link rel="stylesheet" href="../css/buttons.css">
@@ -120,7 +120,7 @@
                 总价(不含运费):
                 <span>￥0</span>
             </div>
-            <a href="#" class="pay button button-raised button-caution">去结算</a>
+            <a href="javascript:;" class="pay button button-raised button-caution">去结算</a>
         </div>
     </div>
 
@@ -151,6 +151,27 @@
     }
 
 
+    // 结算
+    $(document).on("click", ".pay", function () {
+        if ($(".check-one:checked").length > 0) {
+            var buyinfo = [];
+            $(".check-one:checked").each(function () {
+                var arr = [];
+                var gid = $(this).parent().attr("data-gid");
+                var buyNum = $(this).parent().children().children("#goodsNum").val();
+                // console.log(buyNum);
+                arr.push(gid + "&" + buyNum);
+                // arr.push("=" + buyNum);
+                buyinfo.push(arr);
+
+            })
+            // console.log(buyinfo);
+            location.href = "account.html?buyinfo=" + encodeURIComponent(buyinfo);
+        } else {
+            alert("还未选中商品");
+        }
+
+    })
 
 
     // 减少商品数量
@@ -286,8 +307,8 @@
             alert("还未选中商品");
         }
 
-
     })
+
 
 
     function allNum() {

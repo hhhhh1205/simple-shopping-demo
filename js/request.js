@@ -68,3 +68,12 @@ const goodsUpdateShoppingCarById = params => request("../php/goods_updateShoppin
 // 删除购物车中商品
 const goodsDeleteShoppingCarById = params => request("../php/goods_deleteShoppingCarById.php", params, "get");
 
+// 加入结算
+const goodsSearchAccountByGid = params => request("../php/goods_searchAccountByGid.php", params, "post");
+
+// 加入地址
+const goodsAddAddress = params => request("../php/goods_addAddress.php", params, "post");
+
+// 查询地址
+const goodsSearchAddressByUser = params => request("../php/goods_searchAddressByUser.php", params, "post");
+

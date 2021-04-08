@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易华为商城</title>
+    <link rel="stylesheet" href="../css/account.css">
+    <link rel="stylesheet" href="../css/buttons.css">
+    <link rel="stylesheet" href="../pagination/common/reset.css">
+    <link rel="stylesheet" href="../font/iconfont.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/cookie.js"></script>
+    <script src="../js/jquery-1.10.1.min.js"></script>
+    <script src="../js/request.js"></script>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="container">
+            <div class="index"><a href="index.html">首页</a></div>
+            <div class="shop"><a href="javascript:;">购物车</a></div>
+            <div class="tips">
+                <a href="register.html">注册</a>
+                <a href="login.html">登录</a>
+            </div>
+        </div>
+    </div>
+    <div id="address" class="container">
+        <div class="header-wrapper">
+            <h2>请选择收货地址</h2>
+            <div class="add-address-btn">
+                新增收货地址
+            </div>
+        </div>
+        <div class="address-list">
+            <div
+                style="width: 100%; text-align: center; font-size: 14px; font-weight: bold; margin-top: 50px; color: #ccc;">
+                暂无收货地址
+            </div>
+            <!-- <div class="addr-item">
+                <div class="addr-hd">
+                    <span>湖北</span>
+                    <span>武汉</span>
+                    <span>（木木木收）</span>
+                </div>
+                <div class="addr-bd">
+                    <span>江夏</span>
+                    <span>江夏经济开发大桥新黄家湖大道333号武汉学院</span>
+                    <span>17354360520</span>
+                </div>
+                <div class="operation">
+                    <a href="javascript:;">修改</a>
+                    <a href="javascript:;">删除</a>
+                </div>
+            </div> -->
+
+        </div>
+        <div class="showBox">
+            <div class="show-all">显示全部地址</div>
+            <div class="show-little">收起显示全部地址</div>
+        </div>
+    </div>
+
+    <div class="shopinfo container">
+        <div class="header-wrapper">
+            <div class="header-title">确认订单信息</div>
+            <div class="header-item">
+                <span class="item-0">商品信息</span>
+                <span class="item-1">单价</span>
+                <span class="item-2">数量</span>
+                <span class="item-3">小计</span>
+            </div>
+        </div>
+        <div class="shop-wrapper">
+            <!-- <div class="shop-item">
+                <div class="shopbox">
+                    <img src="../images/register.jpg" alt="">
+                    <div class="shop-item-content">
+                        <p>【3盒装】hierarchy美国直营包邮水乳不湿清洁护肤有效改善面部肌肤问题</p>
+                        <span>支持7天退货</span>
+                        <a href="javascript:;">限时购</a>
+                    </div>
+                    <div class="goodsPrice">￥<span>148.00</span></div>
+                    <div class="goodsNums">2</div>
+                    <div class="goodsAllPrice">￥<span>296.00</span></div>
+                </div>
+                <div class="buy-detail">
+                    <div class="message">
+                        <span>给卖家留言：</span>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="sendinfo">
+                        <div class="sendtype">
+                            运送方式：<span>普通配送&ensp;快递&ensp;免邮</span>
+                        </div>
+                        <div>
+                            &emsp;运费险：<span>卖家赠送，退换货可赔</span>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <div class="buytype">
+            <div class="byfriend">
+                <label><input type="checkbox" class="type-0">朋友代付</label>
+                <label><input type="checkbox" class="type-1" checked>匿名购买</label>
+                <label><input type="checkbox" class="type-2">花呗分期</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="paybox">
+            <div class="boxshadow">
+                <div>
+                    <span class="realpay--title">实付款：</span>
+                    <span class="realpay--price-symbol">￥</span>
+                    <span class="realpay--price">0.00</span>
+                </div>
+                <div class="order-confirmAddr">
+                    <div class="confirmAddr-addr">
+                        <span class="confirmAddr-title">寄送至：</span>
+                        <span class="confirmAddr-addr-bd"> 湖北 武汉 江夏 江夏经济开发大桥新 黄家湖大道333号</span>
+                    </div>
+                    <div class="confirmAddr-addr-user">
+                        <span class="confirmAddr-title">收货人：</span>
+                        <span class="confirmAddr-addr-bd">三木 17323215698</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="submitbox">
+            <a href="javascript:;" class="go-shoppingcar">返回购物车</a>
+            <a href="javascript:;" class="submit button button-raised button-caution">提交订单</a>
+        </div>
+    </div>
+
+    <div class="footer .container-fluid">
+        <div class="container">
+            <img src="../images/shoppingCar-footer.png" alt="">
+        </div>
+    </div>
+
+    <div class="add-address">
+        <div class="add-address-form">
+            <div class="addr-info">
+                <div class="form-item-label"><label required="">地址信息:</label></div>
+                <div class="addr-box">请选择省/市/区</div>
+            </div>
+            <div class="division-box">
+                <ul class="division-box-title">
+                    <li cId="0" class="addr-box-title-level title-active" style="width: 33%;">省</li>
+                    <li cId="1" class="addr-box-title-level " style="width: 33%;">市</li>
+                    <li cId="2" class="addr-box-title-level " style="width: 33%;">区</li>
+                </ul>
+                <ul class="division-box-content">
+                    <div>
+                        <!-- <li class="addr-box-content-tag active">大榭街道</li>
+                        <li class="addr-box-content-tag ">新碶街道</li>
+                        <li class="addr-box-content-tag ">小港街道</li>
+                        <li class="addr-box-content-tag ">大碶街道</li>
+                        <li class="addr-box-content-tag ">霞浦街道</li>
+                        <li class="addr-box-content-tag ">柴桥街道</li>
+                        <li class="addr-box-content-tag ">戚家山街道</li>
+                        <li class="addr-box-content-tag ">白峰镇</li>
+                        <li class="addr-box-content-tag ">春晓镇</li>
+                        <li class="addr-box-content-tag ">梅山乡</li>
+                        <li class="addr-box-content-tag ">保税区</li> -->
+                    </div>
+                </ul>
+            </div>
+
+            <div class="associate ">
+                <span class="associate-title">
+                    <div class="form-item-label"><label required="">详细地址:</label></div>
+                </span>
+                <div class="associate-area">
+                    <textarea class="form-control" rows="2" cols="20"
+                        placeholder="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元等信息"></textarea>
+                </div>
+            </div>
+
+            <div class="associate ">
+                <span class="associate-title">
+                    <div class="form-item-label"><label required="">收货人姓名:</label></div>
+                </span>
+                <div class="associate-name">
+                    <textarea class="form-control" rows="1" cols="20" placeholder="请输入收货人姓名"></textarea>
+                </div>
+            </div>
+
+            <div class="associate ">
+                <span class="associate-title">
+                    <div class="form-item-label"><label required="">收货人电话:</label></div>
+                </span>
+                <div class="associate-phone">
+                    <textarea class="form-control" rows="1" cols="20" placeholder="请输入收货人电话"></textarea>
+                </div>
+            </div>
+            <div class="associate ">
+                <button id="cancel" class="button button-primary button-pill">取消</button>
+                <button id="addrReset" class="button button-caution button-pill">保存</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    $(function () {
+
+        if (document.cookie) {
+
+            var lguser = getCookie("lguser");
+            if (lguser) {
+
+                $(".tips").html(`欢迎，${lguser}<button onclick="exit();" class="button button-glow button-border button-rounded button-primary" style="height:30px;line-height:30px;padding:0px 5px;margin-left: 20px;">退出登录</button>`);
+
+            }
+        }
+
+        var prov = "";  // 省
+        var urban = "";  // 市
+        var district = "";  // 区
+        var detailaddr = "";  // 详细地址
+        var getPhone = ""; // 收件人电话
+        var getName = "";  // 收件人姓名
+
+        $(".add-address-btn").click(function () {
+            $(".add-address").css("display", "block");
+        })
+
+        $("#cancel").click(function () {
+            $(".add-address").css("display", "none");
+
+            detailaddr = "";  // 详细地址
+            getPhone = ""; // 收件人电话
+            getName = "";  // 收件人姓名
+        })
+
+        $(".addr-box").click(function () {
+            $(".division-box").css("display", "block");
+            $("#addrReset").css("display", "none");
+            $("#cancel").css("display", "none");
+            $(".addr-box").text("请选择省/市/区");
+            var proUraDis = "";   // 三级联动
+
+            $.ajax({
+                type: "get",
+                url: "../data/proData.json",
+                dataType: "json",
+                success: res => {
+
+                    console.log(res);
+                    var { list: proList } = res;
+                    var htmlProUrbanDis = "";
+                    proList.forEach(({ city_id, name: proName }) => htmlProUrbanDis += `<li cityId="${city_id}" class="addr-box-content-tag ">${proName}</li>`);
+                    $(".division-box-content div").html(htmlProUrbanDis);
+
+
+                    // 二级
+                    $(".division-box-content div li").click(function () {
+                        // console.log($(this).attr("cityId"), $(this).text());
+
+                        prov = $(this).text().trim();
+                        proUraDis += $(this).text().trim();
+                        $(".addr-box").text(proUraDis);
+
+                        if ($(this).attr("cityId")) {
+                            var htmlProUrbanDis = "";
+                            var { list: cityList } = proList.filter(item => $(this).attr("cityId") == item.city_id)[0];
+                            // console.log(cityList[0]);
+
+                            if (cityList[0].list) {
+                                $(".addr-box-title-level").eq(0).removeClass("title-active");
+                                $(".addr-box-title-level").eq(1).addClass("title-active");
+
+                                cityList.forEach(({ city_id, name: urbanName }) => htmlProUrbanDis += `<li cityId="${city_id}" class="addr-box-content-tag ">${urbanName}</li>`);
+                                $(".division-box-content div").html(htmlProUrbanDis);
+
+                                // 三级
+                                $(".division-box-content div li").click(function () {
+
+                                    urban = $(this).text().trim();
+                                    proUraDis += " / " + $(this).text().trim();
+                                    $(".addr-box").text(proUraDis);
+
+                                    // console.log($(this).attr("cityId"), $(this).text());
+                                    $(".addr-box-title-level").eq(0).removeClass("title-active");
+                                    $(".addr-box-title-level").eq(1).removeClass("title-active");
+                                    $(".addr-box-title-level").eq(2).addClass("title-active");
+
+                                    var { list: areaList } = cityList.filter(item => $(this).attr("cityId") == item.city_id)[0];
+                                    if (areaList) {
+                                        var htmlProUrbanDis = "";
+                                        areaList.forEach(({ city_id, name: disName }) => htmlProUrbanDis += `<li cityId="${city_id}" class="addr-box-content-tag ">${disName}</li>`);
+                                        $(".division-box-content div").html(htmlProUrbanDis);
+                                    }
+
+
+                                    // 选择区
+                                    $(".division-box-content div li").click(function () {
+
+                                        $(".addr-box-title-level").eq(0).addClass("title-active");
+                                        $(".addr-box-title-level").eq(1).removeClass("title-active");
+                                        $(".addr-box-title-level").eq(2).removeClass("title-active");
+
+                                        district = $(this).text().trim();
+                                        proUraDis += " / " + $(this).text().trim();
+                                        $(".addr-box").text(proUraDis);
+
+                                        $(".division-box").css("display", "none");
+                                        $("#addrReset").css("display", "block");
+                                        $("#cancel").css("display", "block");
+
+                                        console.log(prov, urban, district);
+
+
+
+                                        $("#addrReset").click(function () {
+                                            detailaddr = $(".associate-area .form-control").val().trim();
+                                            getPhone = $(".associate-phone .form-control").val().trim();
+                                            getName = $(".associate-name .form-control").val().trim();
+                                            console.log(detailaddr, getPhone, getName);
+
+                                            goodsAddAddress({
+                                                name: getName,
+                                                phone: getPhone,
+                                                user: lguser,
+                                                prov,
+                                                urban,
+                                                district,
+                                                detailaddr
+                                            });
+
+                                            $(".add-address").css("display", "none");
+
+                                            $(".addr-box").text("请选择省/市/区");
+                                            $(".associate-area .form-control").val("");
+                                            $(".associate-name .form-control").val("");
+                                            $(".associate-phone .form-control").val("");
+
+                                            detailaddr = "";  // 详细地址
+                                            getPhone = ""; // 收件人电话
+                                            getName = "";  // 收件人姓名
+                                        })
+                                    })
+                                })
+
+                            } else {
+                                $(".addr-box-title-level").eq(0).removeClass("title-active");
+                                $(".addr-box-title-level").eq(2).addClass("title-active");
+
+                                cityList.forEach(({ city_id, name: urbanName }) => htmlProUrbanDis += `<li cityId="${city_id}" class="addr-box-content-tag ">${urbanName}</li>`);
+                                $(".division-box-content div").html(htmlProUrbanDis);
+
+                                // 选择区
+                                $(".division-box-content div li").click(function () {
+
+                                    $(".addr-box-title-level").eq(0).addClass("title-active");
+                                    $(".addr-box-title-level").eq(1).removeClass("title-active");
+                                    $(".addr-box-title-level").eq(2).removeClass("title-active");
+
+                                    urban = ""
+                                    district = $(this).text().trim();
+                                    proUraDis += urban + " / " + district;
+                                    $(".addr-box").text(proUraDis);
+
+                                    $(".division-box").css("display", "none");
+                                    $("#addrReset").css("display", "block");
+                                    $("#cancel").css("display", "block");
+
+                                    console.log(prov, urban, district);
+
+
+                                    $("#addrReset").click(function () {
+                                        detailaddr = $(".associate-area .form-control").val().trim();
+                                        getPhone = $(".associate-phone .form-control").val().trim();
+                                        getName = $(".associate-name .form-control").val().trim();
+                                        console.log(detailaddr, getPhone, getName);
+
+                                        goodsAddAddress({
+                                            name: getName,
+                                            phone: getPhone,
+                                            user: lguser,
+                                            prov,
+                                            district,
+                                            detailaddr
+                                        });
+
+                                        $(".add-address").css("display", "none");
+
+                                        $(".addr-box").text("请选择省/市/区");
+                                        $(".associate-area .form-control").val("");
+                                        $(".associate-name .form-control").val("");
+                                        $(".associate-phone .form-control").val("");
+
+                                        detailaddr = "";  // 详细地址
+                                        getPhone = ""; // 收件人电话
+                                        getName = "";  // 收件人姓名
+                                    })
+                                })
+
+                            }
+
+                        }
+
+                    })
+
+                }
+            });
+        })
+
+        $("#addrReset").mouseup(function () {
+            setTimeout(function () {
+                getAddr();
+            }, 500);
+        })
+
+        $(".show-all").click(function () {
+            getAddr("all");
+        })
+
+        $(".show-little").click(function () {
+            getAddr();
+        })
+
+
+        getAddr();
+        function getAddr(all) {
+
+            goodsSearchAddressByUser({ user: lguser, all }).then(data => {
+
+                var html = "";
+                // console.log("地址", data);
+                data.forEach(({ name, phone, prov, urban, district, detailaddr }) => html += `<div class="addr-item">
+                    <div class="addr-hd">
+                        <span>${prov}</span>
+                        <span>${urban}</span>
+                        <span>（${name}收）</span>
+                    </div>
+                    <div class="addr-bd">
+                        <span>${district}</span>
+                        <span>${detailaddr}</span>
+                        <span>${phone}</span>
+                    </div>
+                    <div class="operation">
+                        <a href="javascript:;">修改</a>
+                        <a href="javascript:;">删除</a>
+                    </div>
+                </div>`);
+
+
+                $(".address-list").html(html);
+            })
+        }
+
+
+        var search = location.search;
+        var str = decodeURIComponent(search.split("=")[1]);
+        var buyinfo = str.split(",");
+        // console.log(buyinfo);
+
+        var html = "";
+        var realpay = 0;
+        buyinfo.forEach(async function (info) {
+            var gid = info.split("&")[0];
+            var buyNum = info.split("&")[1];
+            // console.log(gid, buyNum);
+
+            var data = await goodsSearchAccountByGid({ gid, buyNum })
+            // console.log(data);
+            data.forEach(({ id, goodsName, price, img, subTotal }) => {
+                realpay += subTotal * 1;
+                html += `<div class="shop-item">
+                <div class="shopbox">
+                    <img src="${img}" alt="">
+                    <div class="shop-item-content">
+                        <p>${goodsName}</p>
+                        <span>支持7天退货</span>
+                        <a href="javascript:;">限时购</a>
+                    </div>
+                    <div class="goodsPrice">￥<span>${price}</span></div>
+                    <div class="goodsNums">${info.split("&")[1]}</div>
+                    <div class="goodsAllPrice">￥<span>${subTotal}</span></div>
+                </div>
+                <div class="buy-detail">
+                    <div class="message">
+                        <span>给卖家留言：</span>
+                        <textarea class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="sendinfo">
+                        <div class="sendtype">
+                            运送方式：<span>普通配送&ensp;快递&ensp;免邮</span>
+                        </div>
+                        <div>
+                            &emsp;运费险：<span>卖家赠送，退换货可赔</span>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            })
+
+            $(".shop-wrapper").html(html);
+            $(".realpay--price").text(realpay.toFixed(2));
+        })
+
+
+        $(".go-shoppingcar").click(function () {
+            location.href = "shoppingCar.html";
+        })
+
+        $(".shop").click(function () {
+            if (lguser) {
+                location.href = "shoppingCar.html";
+            } else {
+                location.href = "login.html";
+            }
+        })
+
+
+    })
+
+</script>
+
+</html>

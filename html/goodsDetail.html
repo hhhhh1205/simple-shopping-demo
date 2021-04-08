@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>简易华为商城</title>
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../pagination/pagination.css">
     <link rel="stylesheet" href="../css/buttons.css">
@@ -133,12 +133,32 @@
         }
     }
 
+    $(document).on("click", "#buyNow", function () {
+        if (lguser) {
+            var search = location.search;
+            var buyinfo = [];
+
+            var gid = search.split("=")[1];
+            var buyNum = $(".buyBox .buyNum input").val();
+            // console.log(buyNum);
+            buyinfo.push(gid + "&" + buyNum);
+            // buyinfo.push(buyNum);
+
+            console.log(buyinfo);
+            location.href = "account.html?buyinfo=" + encodeURIComponent(buyinfo);
+        } else {
+            if (confirm("还未登录账号，是否跳转至登录页面")) {
+                location.href = "login.html?returnUrl=" + encodeURIComponent(location.href);
+            }
+        }
+    })
+
     $(".shop").click(function () {
         if (lguser) {
             location.href = "shoppingCar.html";
         } else {
             if (confirm("还未登录账号，是否跳转至登录页面")) {
-                location.href = "login.html?returnUrl=" + encodeURIComponent(location.href)
+                location.href = "login.html?returnUrl=" + encodeURIComponent(location.href);
             }
         }
     })
@@ -180,11 +200,12 @@
                 $(".wrap .right .about .goodsid").text(`${gid}`);
 
 
+                var timer = null;
                 // 放大镜
                 $(".wrapBox").mouseenter(function () {
                     $(".shadow").css({ display: "block" });
                     var i = 0;
-                    var timer = setInterval(function () {
+                    timer = setInterval(function () {
                         i += 10;
                         $(".showBigImg").css({ opacity: i / 100 });
                         if (i == 100) {
@@ -194,6 +215,7 @@
                 })
 
                 $(".wrapBox").mouseleave(function () {
+                    clearInterval(timer);
                     $(".shadow").css({ display: "none" });
                     $(".showBigImg").css({ opacity: 0 });
                 })
@@ -219,10 +241,6 @@
 
                     $(".bigImg").css({ left: -x * scale });
                     $(".bigImg").css({ top: -y * scale });
-                })
-
-                $(".showBigImg").mouseleave(function () {
-                    $(this).css({ opacity: 0 })
                 })
 
                 $(".switchList li").each(function () {
