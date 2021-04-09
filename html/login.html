@@ -99,6 +99,76 @@
             height: 12px;
             margin-right: 10px;
         }
+
+        .outer {
+            width: 500px;
+            height: 400px;
+            background: white;
+            padding: 30px 20px 0;
+            display: none;
+            margin: 250px auto;
+            border-radius: 5px;
+        }
+
+        .innerup {
+            width: 480px;
+            height: 230px;
+            border: 2px solid black;
+            margin: 5px auto;
+            position: relative;
+            background: url("../images/2.jpg");
+            background-size: 480px 230px;
+        }
+
+        .box1 {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255);
+        }
+
+        .box2 {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .box2-inner {
+            width: 100%;
+            height: 100%;
+        }
+
+        .innerdown {
+            width: 480px;
+            height: 50px;
+            /* border: 2px solid black; */
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 192, 203, 0.5);
+            position: absolute;
+            left: 0;
+        }
+
+        .text {
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            user-select: none;
+            font-size: 20px;
+        }
     </style>
     <script src="../js/common.js"></script>
     <script src="../js/cookie.js"></script>
@@ -125,15 +195,62 @@
             <button class="btn">登录</button>
         </p>
     </div>
+    <!-- 滑动验证 -->
+    <div class="outer">
+        <div class="innerup">
+            <div class="box1"></div>
+            <div class="box2">
+                <div class="box2-inner"></div>
+            </div>
+        </div>
+        <div class="innerdown">
+            <div class="ball"></div>
+        </div>
+        <div class="text">请将方块滑动至指定位置</div>
+    </div>
 </body>
 
 <script>
+    var form = document.querySelector(".form");
     var userInp = document.querySelector(".user");
     var userSpan = document.querySelector(".user_span");
     var pwdInp = document.querySelector(".pwd");
     var pwdSpan = document.querySelector(".pwd_span");
     var btn = document.querySelector(".btn");
     var checkbox = document.querySelector(".ckbox input");
+
+    var outer = document.querySelector('.outer');
+    var innerup = document.querySelector('.innerup');
+    var box1 = document.querySelector('.box1');
+    var box2 = document.querySelector('.box2');
+    var box2Inner = document.querySelector('.box2-inner');
+    var innerdown = document.querySelector('.innerdown');
+    var ball = document.querySelector('.ball');
+
+
+    function loadImg() {
+        // box2可以随机移动的范围
+        var minLeft2 = box2.clientWidth;
+        var maxLeft2 = innerup.clientWidth - box2.clientWidth;
+        var maxTop2 = innerup.clientHeight - box2.clientHeight;
+
+        box2.style.top = (Math.random() * maxTop2) + "px";
+        box2.style.left = (minLeft2 + Math.random() * (maxLeft2 - minLeft2)) + "px";
+
+        box2.style.backgroundImage = "url('../images/2.jpg')";
+        box2.style.backgroundSize = '480px 230px';
+        box2.style.backgroundPosition = -parseFloat(box2.style.left) + "px " + -parseFloat(box2.style.top) + "px";
+
+
+        box2Inner.style.backgroundColor = "rgba(0,0,0,0.3)";
+
+        box1.style.backgroundImage = "url('../images/2.jpg')";
+        box1.style.backgroundSize = '480px 230px';
+        box1.style.backgroundPosition = -parseFloat(box2.style.left) + "px " + -parseFloat(box2.style.top) + "px";
+
+        box1.style.top = box2.style.top;
+    }
+
 
 
     var userFlag = false;
@@ -220,23 +337,118 @@
                         }
 
                         if (userFlag && pwdFlag) {
-                            if (checkbox.checked) {
-                                setCookie("lguser", username, 10);
-                            } else {
-                                setCookie("lguser", username);
+
+                            form.style.display = "none";
+                            outer.style.display = "block";
+                            loadImg();
+                            ball.onmousedown = function (e) {
+                                var e = e || window.event;
+
+                                ball.style.backgroundColor = "pink";
+
+                                // 记录鼠标按下时相对于小球的位置
+                                var mouseX = e.offsetX;
+
+                                document.onmousemove = function (e) {
+                                    var e = e || window.event;
+
+                                    console.log(innerdown.offsetLeft);
+                                    var x = e.clientX - innerdown.offsetLeft - mouseX;
+                                    var maxLeft = innerdown.clientWidth - ball.clientWidth;
+
+                                    if (x < 0) x = 0;
+                                    if (x > maxLeft) x = maxLeft;
+
+                                    ball.style.left = x + "px";
+                                    box1.style.left = ball.style.left;
+                                }
                             }
 
-                            var search = location.search;
+                            document.onmouseup = function (e) {
+                                var e = e || window.event;
 
-                            if (search) {
+                                ball.style.backgroundColor = "rgba(255, 192, 203, 0.5)";
+                                document.onmousemove = null;
 
-                                var str = search.split("=")[1];
-                                var url = decodeURIComponent(str);
-                                location.href = url;
-                            } else {
+                                var box1Left = parseFloat(box1.style.left);
+                                var box2Left = parseFloat(box2.style.left);
 
-                                location.href = "index.html";
+                                if (box1Left >= box2Left - 5 && box1Left <= box2Left + 5) {
+
+
+
+                                    if (checkbox.checked) {
+                                        setCookie("lguser", username, 10);
+                                    } else {
+                                        setCookie("lguser", username);
+                                    }
+
+                                    var search = location.search;
+
+                                    if (search) {
+
+                                        var str = search.split("=")[1];
+                                        var url = decodeURIComponent(str);
+                                        location.href = url;
+                                    } else {
+
+                                        location.href = "index.html";
+                                    }
+
+                                    outer.style.display = "none";
+                                    form.style.display = "block";
+                                    box1.style.left = 0;
+                                    ball.style.left = 0;
+                                    loadImg();
+
+                                } else {
+                                    box1.style.left = 0;
+                                    ball.style.left = 0;
+                                }
                             }
+
+                            ball.onmouseup = function (e) {
+                                var e = e || window.event;
+
+                                ball.style.backgroundColor = "rgba(255, 192, 203, 0.5)";
+                                document.onmousemove = null;
+
+                                var box1Left = parseFloat(box1.style.left);
+                                var box2Left = parseFloat(box2.style.left);
+
+                                if (box1Left >= box2Left - 5 && box1Left <= box2Left + 5) {
+
+
+                                    if (checkbox.checked) {
+                                        setCookie("lguser", username, 10);
+                                    } else {
+                                        setCookie("lguser", username);
+                                    }
+
+                                    var search = location.search;
+
+                                    if (search) {
+
+                                        var str = search.split("=")[1];
+                                        var url = decodeURIComponent(str);
+                                        location.href = url;
+                                    } else {
+
+                                        location.href = "index.html";
+                                    }
+
+                                    outer.style.display = "none";
+                                    form.style.display = "block";
+                                    box1.style.left = 0;
+                                    ball.style.left = 0;
+                                    loadImg();
+
+                                } else {
+                                    box1.style.left = 0;
+                                    ball.style.left = 0;
+                                }
+                            }
+
 
                         }
                     } else {
@@ -252,25 +464,6 @@
 
     }
 
-
-    // function login() {
-    //     return new Promise((resolve, reject) => {
-    //         $.ajax({
-    //             type: "POST",
-    //             url: "../php/login.php",
-    //             data: { name: userInp.value, password: pwdInp.value },
-    //             dataType: "json",
-    //             success: res => {
-
-    //                 if (res.status) {
-    //                     resolve(res);
-    //                 } else {
-    //                     reject();
-    //                 }
-    //             }
-    //         });
-    //     })
-    // }
 
 
 
